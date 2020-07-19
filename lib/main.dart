@@ -1,117 +1,319 @@
+import 'dart:async';
+
+import 'package:doctors_voice_mobile/curvesAnimation.dart';
+import 'package:doctors_voice_mobile/dashboard.dart';
+import 'package:doctors_voice_mobile/forgot_password.dart';
+import 'package:doctors_voice_mobile/register_page.dart';
 import 'package:flutter/material.dart';
 
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+
 void main() {
-  runApp(MyApp());
+  runApp(LoginOrDashboard());
 }
 
-class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
+
+BuildContext globalContext;
+
+class LoginOrDashboard extends StatelessWidget {
+
+ 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: "Doctor's Voice",
+      debugShowCheckedModeBanner: false,
+      
       theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
-        primarySwatch: Colors.blue,
-        // This makes the visual density adapt to the platform that you run
-        // the app on. For desktop platforms, the controls will be smaller and
-        // closer together (more dense) than on mobile platforms.
+        primarySwatch: Colors.green,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
+      home: LoginOrDashboardStateful(title: "Login"),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
+class LoginOrDashboardStateful extends StatefulWidget {
+  LoginOrDashboardStateful({Key key, this.title}) : super(key: key);
 
   final String title;
 
+  
+
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  LoginOrDashboardState createState() => LoginOrDashboardState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+class LoginOrDashboardState extends State<LoginOrDashboardStateful> with TickerProviderStateMixin {
 
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
+
+  final GoogleSignIn _googleSignIn = GoogleSignIn();
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+
+  TextEditingController emailId = new TextEditingController();
+  TextEditingController password = new TextEditingController();
+
+  bool isLoadingDone = true;
+
+ void initState() {
+   super.initState();
+
+    _auth.currentUser().then((value) {
+
+    if(value != null) {
+      Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => Dashboard(firebaseUser: value,),), (route) => false);
+    } else {
+    Timer(Duration(seconds: 1), () {
+      isLoadingDone = !isLoadingDone;
+      setState(() {
+        
+      });
     });
+
+    }
+    }) ;
+
+    
   }
 
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
-    return Scaffold(
-      appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
+
+
+    globalContext = context;
+
+
+    return isLoadingDone ? Container(
+      width: MediaQuery.of(context).size.width,
+      height: MediaQuery.of(context).size.height,
+      color: Colors.white,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Center(child: CircularProgressIndicator(),),
+        ],
       ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Invoke "debug painting" (press "p" in the console, choose the
-          // "Toggle Debug Paint" action from the Flutter Inspector in Android
-          // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-          // to see the wireframe for each widget.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'You have pushed the button this many times:',
+    ) : Scaffold(
+      resizeToAvoidBottomInset: false,
+      resizeToAvoidBottomPadding: false,
+      backgroundColor: Colors.white,
+      body: Stack(children: [
+
+        CustomPaint(
+      painter: LoginPainter(),
+      size: MediaQuery.of(context).size,
+    ),
+
+Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.max,
+        children: [
+
+          
+          // Center(
+          //   child: Text("Doctor's Voice",
+          //     style: TextStyle(fontFamily: 'Manrope',
+          //     fontSize: 24.0,
+          //     fontWeight: FontWeight.w700
+          //     ),
+          //   ),
+          // ),
+
+
+
+          Padding(
+            padding: EdgeInsets.fromLTRB(24.0, 24.0, 16.0, 16.0),
+            child: Text("Login",
+            textAlign: TextAlign.start,
+              style: TextStyle(fontFamily: 'Manrope',
+              
+              fontSize: 30.0,
+              fontWeight: FontWeight.w700,
+              color: Colors.white
+              ),
             ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
+          ),
+
+            Padding(
+              padding: EdgeInsets.all(16.0),
+              child: Card(
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.0)),
+              elevation: 4.0,
+              shadowColor: Colors.black,
+              child: Column(
+                children: [
+
+
+
+                  Padding(
+                    padding: EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 8.0),
+                    child: TextField(
+                      controller: emailId,
+                      style: TextStyle(
+                        fontFamily: 'Manrope',
+              fontWeight: FontWeight.w700
+                      ),
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(16.0),),
+                        prefixIcon: Icon(Icons.person),
+                        labelText: "Email ID"
+                      ),
+                    ),
+                  ),
+
+
+                  Padding(
+                    padding: EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 16.0),
+                    child: TextField(
+                      controller: password,
+                      
+                      obscureText: true,
+                      style: TextStyle(
+                        fontFamily: 'Manrope',
+              fontWeight: FontWeight.w700
+                      ),
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(16.0),
+                        ),
+                        prefixIcon: Icon(Icons.lock),
+                        labelText: "Password"
+                      ),
+                    ),
+                  ),
+
+
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      Padding(
+                    padding: EdgeInsets.all(16.0),
+                    child: RaisedButton(
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.0)),
+                      elevation: 4.0,
+      color: Colors.green,
+                      onPressed: () {
+
+                        FirebaseAuth.instance.signInWithEmailAndPassword(email: emailId.text, password: password.text).then((value) {
+
+                          Navigator.of(context).push(MaterialPageRoute(builder: (context) => new Dashboard(firebaseUser: value.user)));
+
+                        }).catchError((onError) {
+
+                        });
+
+
+                      },
+                      child: Padding(
+                        padding: EdgeInsets.all(16.0),
+                        child: Text("Login", style: TextStyle(color: Colors.white),),
+                      ),
+                    ),
+                  ),
+
+                  Padding(
+                    padding: EdgeInsets.all(16.0),
+                    child: RaisedButton(
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.0)),
+                      color: Colors.white,
+                      elevation: 0.0,
+                      onPressed: () {
+                        Navigator.of(context).push(MaterialPageRoute(builder: (context) => new RegisterUser(context: globalContext,)));
+                      },
+                      child: Padding(
+                        padding: EdgeInsets.all(16.0),
+                        child: Text("Register"),
+                      ),
+                    ),
+                  ),
+                    ],
+                  ),
+
+
+                  Padding(
+                    
+                    padding: EdgeInsets.fromLTRB(8.0, 0.0, 8.0, 16.0),
+                    child: 
+                  InkWell(
+                    onTap: () {
+                      
+                        Navigator.of(context).push(MaterialPageRoute(builder: (context) => new ForgotPassword(context: globalContext,)));
+                    },
+                    child: Padding(
+                      padding: EdgeInsets.all(4.0),
+                      child: Text("Forgot Password?"),
+                    ),
+                  ),
+                  ),
+                ],
+              ),
             ),
-          ],
-        ),
+            ),
+
+
+
+
+            Padding(
+              padding: EdgeInsets.all(16.0),
+              child: Card(
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.0)),
+                elevation: 4.0,
+                color: Colors.pink,
+              shadowColor: Colors.black,
+                child: InkWell(
+                  onTap: () {
+
+                  _handleSignIn()
+                    .then((FirebaseUser user) {
+                      Navigator.of(context).push(MaterialPageRoute(builder: (context) => new Dashboard(firebaseUser: user,)));
+                    })
+                    .catchError((e) => print(e));
+
+
+
+                  },
+                  child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.max,
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: Row(
+                      children: [
+                        Image.network("https://img.icons8.com/bubbles/2x/google-logo.png", width: 50, height: 50,),
+
+                        Text("Continue with Google", style: TextStyle(fontWeight: FontWeight.w500, color: Colors.white),),
+                      ],
+                    ),
+                    ),
+                  ],
+                ),
+                ),
+              ),
+            ),
+        ],
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+
+
+      ],),
     );
   }
+
+  Future<FirebaseUser> _handleSignIn() async {
+  final GoogleSignInAccount googleUser = await _googleSignIn.signIn();
+  final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
+
+  final AuthCredential credential = GoogleAuthProvider.getCredential(
+    accessToken: googleAuth.accessToken,
+    idToken: googleAuth.idToken,
+  );
+
+  final FirebaseUser user = (await _auth.signInWithCredential(credential)).user;
+  print("signed in " + user.displayName);
+  return user;
+}
 }

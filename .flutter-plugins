@@ -1,0 +1,17 @@
+# This is a generated file; do not edit or check into version control.
+speech_recognition=/home/nani/.pub-cache/git/speech_recognition-68f2a1193461460818c6d1ec62ae704cc977c955/
+cloud_firestore=/home/nani/.pub-cache/hosted/pub.dartlang.org/cloud_firestore-0.13.7/
+cloud_firestore_web=/home/nani/.pub-cache/hosted/pub.dartlang.org/cloud_firestore_web-0.1.1+2/
+firebase_auth=/home/nani/.pub-cache/hosted/pub.dartlang.org/firebase_auth-0.16.1/
+firebase_auth_web=/home/nani/.pub-cache/hosted/pub.dartlang.org/firebase_auth_web-0.1.3+1/
+firebase_core=/home/nani/.pub-cache/hosted/pub.dartlang.org/firebase_core-0.4.5/
+firebase_core_web=/home/nani/.pub-cache/hosted/pub.dartlang.org/firebase_core_web-0.1.1+2/
+firebase_storage=/home/nani/.pub-cache/hosted/pub.dartlang.org/firebase_storage-3.1.6/
+google_sign_in=/home/nani/.pub-cache/hosted/pub.dartlang.org/google_sign_in-4.5.1/
+google_sign_in_web=/home/nani/.pub-cache/hosted/pub.dartlang.org/google_sign_in_web-0.9.1+1/
+path_provider=/home/nani/.pub-cache/hosted/pub.dartlang.org/path_provider-1.6.11/
+path_provider_linux=/home/nani/.pub-cache/hosted/pub.dartlang.org/path_provider_linux-0.0.1+2/
+path_provider_macos=/home/nani/.pub-cache/hosted/pub.dartlang.org/path_provider_macos-0.0.4+3/
+pdf_viewer_plugin=/home/nani/.pub-cache/hosted/pub.dartlang.org/pdf_viewer_plugin-1.0.0+2/
+permission_handler=/home/nani/.pub-cache/hosted/pub.dartlang.org/permission_handler-4.4.0+hotfix.4/
+url_launcher=/home/nani/.pub-cache/hosted/pub.dartlang.org/url_launcher-3.0.3/
