@@ -3,7 +3,7 @@ import 'dart:typed_data';
 
 import 'package:bezier_chart/bezier_chart.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:doctors_voice_mobile/PDFPreviewScreen.dart';
+import 'PDFPreviewScreen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -1075,10 +1075,7 @@ class DashboardState extends State<DashboardStateful> with TickerProviderStateMi
     return AnimatedPositioned(
       duration: Duration(milliseconds: 500,),
       curve: Curves.linearToEaseOut,
-      top: isCollapsed ? 0 : 0.1 * screenHeight,
-      bottom: isCollapsed ? 0 : 0.1 * screenWidth,
-      left: isCollapsed ? 0 : 0.6 * screenWidth,
-      right: isCollapsed ? 0 : -0.4 * screenHeight,
+      left: 0.6 * screenWidth,
       child: Material(
 
         elevation: 16.0,

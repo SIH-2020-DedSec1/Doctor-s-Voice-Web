@@ -350,12 +350,6 @@
       "languageVersion": "2.6"
     },
     {
-      "name": "speech_recognition",
-      "rootUri": "file:///home/nani/.pub-cache/git/speech_recognition-68f2a1193461460818c6d1ec62ae704cc977c955/",
-      "packageUri": "lib/",
-      "languageVersion": "2.0"
-    },
-    {
       "name": "stack_trace",
       "rootUri": "file:///home/nani/.pub-cache/hosted/pub.dartlang.org/stack_trace-1.9.3",
       "packageUri": "lib/",
@@ -428,7 +422,7 @@
       "languageVersion": "2.7"
     }
   ],
-  "generated": "2020-07-19T10:19:37.044608Z",
+  "generated": "2020-07-19T10:21:40.214754Z",
   "generator": "pub",
   "generatorVersion": "2.9.0-14.1.beta"
 }

@@ -3,13 +3,12 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:doctors_voice_mobile/curvesAnimation.dart';
-import 'package:doctors_voice_mobile/dashboard.dart';
-import 'package:doctors_voice_mobile/sending_facilities.dart';
+import 'curvesAnimation.dart';
+import 'dashboard.dart';
+import 'sending_facilities.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:speech_recognition/speech_recognition.dart';
 
 import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
@@ -59,7 +58,7 @@ class NewPatientState extends State<NewPatientStateful> with TickerProviderState
   final pdf = pw.Document();
 
 
-  SpeechRecognition _speech;
+  // SpeechRecognition _speech;
 
   bool _speechRecognitionAvailable = false;
   String totalTranscript = "";
@@ -89,7 +88,7 @@ String dateTime = DateFormat('yyyy-MM-dd_kk:mm').format(DateTime.now());
 
   void initState() {
     super.initState();
-    activateSpeechRecognizer();
+    // activateSpeechRecognizer();
 
 
 
@@ -128,118 +127,118 @@ String dateTime = DateFormat('yyyy-MM-dd_kk:mm').format(DateTime.now());
 
 
 
-    void activateSpeechRecognizer() {
-    print('_MyAppState.activateSpeechRecognizer... ');
-    _speech = new SpeechRecognition();
-    _speech.setAvailabilityHandler(onSpeechAvailability);
-    _speech.setRecognitionStartedHandler(onRecognitionStarted);
-    _speech.setRecognitionResultHandler(onRecognitionResult);
-    _speech.setRecognitionCompleteHandler(onRecognitionComplete);
-    _speech
-        .activate()
-        .then((res) => setState(() => _speechRecognitionAvailable = res));
-  }
+  //   void activateSpeechRecognizer() {
+  //   print('_MyAppState.activateSpeechRecognizer... ');
+  //   _speech = new SpeechRecognition();
+  //   _speech.setAvailabilityHandler(onSpeechAvailability);
+  //   _speech.setRecognitionStartedHandler(onRecognitionStarted);
+  //   _speech.setRecognitionResultHandler(onRecognitionResult);
+  //   _speech.setRecognitionCompleteHandler(onRecognitionComplete);
+  //   _speech
+  //       .activate()
+  //       .then((res) => setState(() => _speechRecognitionAvailable = res));
+  // }
 
 
 
-  void start() => _speech
-      .listen(locale: selectedLang)
-      .then((result) {
-        print('_MyAppState.start => result $result');
+  // void start() => _speech
+  //     .listen(locale: selectedLang)
+  //     .then((result) {
+  //       print('_MyAppState.start => result $result');
 
-        setState(() {
+  //       setState(() {
           
-        });
-      });
+  //       });
+  //     });
 
-  void cancel() =>
-      _speech.cancel().then((result) => setState(() {isRecording = result;
+  // void cancel() =>
+  //     _speech.cancel().then((result) => setState(() {isRecording = result;
       
-              print("Status $isRecording");
+  //             print("Status $isRecording");
               
-              }));
+  //             }));
 
-  void stop() => _speech.stop().then((result) {
-        setState(() => isRecording = result);
-      });
+  // void stop() => _speech.stop().then((result) {
+  //       setState(() => isRecording = result);
+  //     });
 
-  void onSpeechAvailability(bool result) =>
-      setState(() => _speechRecognitionAvailable = result);
-
-
-  void onRecognitionStarted() => setState(() => isRecording = true);
-
-  void onRecognitionResult(String text) => setState(() {
-    transcription = text;
-
-  });
+  // void onSpeechAvailability(bool result) =>
+  //     setState(() => _speechRecognitionAvailable = result);
 
 
-  void onRecognitionComplete(String ok) => setState(() {
-     isRecording = false;
-     transcription = ok;
-    totalTranscript = totalTranscript + "[DOCTOR]: " + transcription + "\n";
+  // void onRecognitionStarted() => setState(() => isRecording = true);
 
-    String actualInfo = "";
-    List<String> transcriptParsed = ok.split(" ");
-    List<String> modString = transcriptParsed.sublist(2);
-    modString.forEach((element) {
-      actualInfo = actualInfo  + element + " ";
-    });
+  // void onRecognitionResult(String text) => setState(() {
+  //   transcription = text;
 
-      if(transcriptParsed[0] == 'put') {
-        print("Given order :  Adding an element");
+  // });
 
 
-      switch(transcriptParsed[1]) {
-        case 'name': patientNameController.text = actualInfo; break;
-        case 'age': patientAgeController.text = transcriptParsed[2]; break;
-        case 'gender': patientGenderController.text = transcriptParsed[2]; break;
-        case 'symptom': symptomsP.text == "" ? symptomsP.text = actualInfo : symptomsP.text = symptomsP.text + ", " + actualInfo; print(symptomsP.text); break;
-        case 'diagnosis': diagnosisP.text == "" ? diagnosisP.text = actualInfo : diagnosisP.text = diagnosisP.text + ", " + actualInfo; break;
-        case 'prescription': prescP.text == "" ? prescP.text = actualInfo : prescP.text = prescP.text + ", " + actualInfo; break;
-        case 'advice': advicesP.text == "" ? advicesP.text = actualInfo : advicesP.text = advicesP.text + ", " + actualInfo; break;
-        default : break;
-      }
+  // void onRecognitionComplete(String ok) => setState(() {
+  //    isRecording = false;
+  //    transcription = ok;
+  //   totalTranscript = totalTranscript + "[DOCTOR]: " + transcription + "\n";
+
+  //   String actualInfo = "";
+  //   List<String> transcriptParsed = ok.split(" ");
+  //   List<String> modString = transcriptParsed.sublist(2);
+  //   modString.forEach((element) {
+  //     actualInfo = actualInfo  + element + " ";
+  //   });
+
+  //     if(transcriptParsed[0] == 'put') {
+  //       print("Given order :  Adding an element");
 
 
-      } else if(transcriptParsed[0]  == 'remove') {
-        print("Given order: Removing an element");
+  //     switch(transcriptParsed[1]) {
+  //       case 'name': patientNameController.text = actualInfo; break;
+  //       case 'age': patientAgeController.text = transcriptParsed[2]; break;
+  //       case 'gender': patientGenderController.text = transcriptParsed[2]; break;
+  //       case 'symptom': symptomsP.text == "" ? symptomsP.text = actualInfo : symptomsP.text = symptomsP.text + ", " + actualInfo; print(symptomsP.text); break;
+  //       case 'diagnosis': diagnosisP.text == "" ? diagnosisP.text = actualInfo : diagnosisP.text = diagnosisP.text + ", " + actualInfo; break;
+  //       case 'prescription': prescP.text == "" ? prescP.text = actualInfo : prescP.text = prescP.text + ", " + actualInfo; break;
+  //       case 'advice': advicesP.text == "" ? advicesP.text = actualInfo : advicesP.text = advicesP.text + ", " + actualInfo; break;
+  //       default : break;
+  //     }
 
 
-      switch(transcriptParsed[1]) {
-        case 'name': patientNameController.text = ""; break;
-        case 'age': patientAgeController.text = ""; break;
-        case 'gender': patientGenderController.text = ""; break;
-        case 'symptoms': symptomsP.text = "";  break;
-        case 'diagnosis': diagnosisP.text = ""; break;
-        case 'prescription': prescP.text = ""; break;
-        case 'advice': advicesP.text = ""; break;
-        default : break;
-      }
+  //     } else if(transcriptParsed[0]  == 'remove') {
+  //       print("Given order: Removing an element");
+
+
+  //     switch(transcriptParsed[1]) {
+  //       case 'name': patientNameController.text = ""; break;
+  //       case 'age': patientAgeController.text = ""; break;
+  //       case 'gender': patientGenderController.text = ""; break;
+  //       case 'symptoms': symptomsP.text = "";  break;
+  //       case 'diagnosis': diagnosisP.text = ""; break;
+  //       case 'prescription': prescP.text = ""; break;
+  //       case 'advice': advicesP.text = ""; break;
+  //       default : break;
+  //     }
 
 
 
-      } else if(transcriptParsed[0]  == "modify") {
-        print("Given order: modifying the element");
+  //     } else if(transcriptParsed[0]  == "modify") {
+  //       print("Given order: modifying the element");
 
 
-      switch(transcriptParsed[1]) {
-        case 'name': patientNameController.text = actualInfo; break;
-        case 'age': patientAgeController.text = transcriptParsed[2]; break;
-        case 'gender': patientGenderController.text = transcriptParsed[2]; break;
-        case 'symptom': symptomsP.text = actualInfo;  break;
-        case 'diagnosis': diagnosisP.text = actualInfo; break;
-        case 'prescription': prescP.text = actualInfo; break;
-        case 'advice': advicesP.text = actualInfo; break;
-        default : break;
-      }
+  //     switch(transcriptParsed[1]) {
+  //       case 'name': patientNameController.text = actualInfo; break;
+  //       case 'age': patientAgeController.text = transcriptParsed[2]; break;
+  //       case 'gender': patientGenderController.text = transcriptParsed[2]; break;
+  //       case 'symptom': symptomsP.text = actualInfo;  break;
+  //       case 'diagnosis': diagnosisP.text = actualInfo; break;
+  //       case 'prescription': prescP.text = actualInfo; break;
+  //       case 'advice': advicesP.text = actualInfo; break;
+  //       default : break;
+  //     }
 
-      }
+  //     }
 
 
-    // response(transcription);
-  });
+  //   // response(transcription);
+  // });
 
   bool uploadingPdfDone = true;
 
@@ -486,9 +485,9 @@ String dateTime = DateFormat('yyyy-MM-dd_kk:mm').format(DateTime.now());
              onPressed: () {
               isRecording = !isRecording;
               if(isRecording && _speechRecognitionAvailable) {
-                start();
+                // start();
               } else {
-                cancel();
+                // cancel();
                   setState(() {
                     isRecording = !isRecording;
                   });

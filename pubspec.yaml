@@ -29,15 +29,10 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^0.1.3
   
-  
   firebase_auth: ^0.16.1
   google_sign_in: ^4.5.1
 
   bezier_chart: ^1.0.16
-  speech_recognition:
-    git:
-      url: git://github.com/nani67/speech_recognition.git
-      ref: master
   
   http: ^0.12.0+2
   googleapis_auth: ^0.2.6

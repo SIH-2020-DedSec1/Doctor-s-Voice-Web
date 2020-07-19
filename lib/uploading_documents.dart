@@ -48,7 +48,10 @@ class UploadingDocumentsState extends State<UploadingDocumentsStateful> with Tic
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
 
-        child: Column(
+        child: Center(
+          child: Container(
+            width: MediaQuery.of(context).size.width / 2.5,
+            child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.max,
@@ -144,6 +147,8 @@ class UploadingDocumentsState extends State<UploadingDocumentsStateful> with Tic
 
         ],
       ),
+          ),
+        ),
       ),
     );
   }

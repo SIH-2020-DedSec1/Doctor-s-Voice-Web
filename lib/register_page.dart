@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:doctors_voice_mobile/curvesAnimation.dart';
-import 'package:doctors_voice_mobile/main.dart';
-import 'package:doctors_voice_mobile/uploading_documents.dart';
+import 'curvesAnimation.dart';
+import 'main.dart';
+import 'uploading_documents.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -57,6 +57,7 @@ class RegisterUserState extends State<RegisterUserStateful> with TickerProviderS
       body: SingleChildScrollView(
 
         child: Stack(
+          alignment: Alignment.center,
           children: [
 
 
@@ -68,8 +69,10 @@ class RegisterUserState extends State<RegisterUserStateful> with TickerProviderS
 
 
 
-
-            Column(
+            Container(
+              width: MediaQuery.of(context).size.width / 2.5,
+              child: Center(
+                child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.max,
@@ -369,6 +372,8 @@ Padding(
             ),
         ],
       ),
+              ),
+            ),
           ],
         ),
       ),

@@ -1,5 +1,5 @@
-import 'package:doctors_voice_mobile/curvesAnimation.dart';
-import 'package:doctors_voice_mobile/main.dart';
+import 'curvesAnimation.dart';
+import 'main.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -65,6 +65,7 @@ class ForgotPasswordState extends State<ForgotPasswordStateful> with TickerProvi
       body: SingleChildScrollView(
 
         child: Stack(
+          alignment: Alignment.center,
           children: [
 
 
@@ -77,8 +78,10 @@ class ForgotPasswordState extends State<ForgotPasswordStateful> with TickerProvi
           ),
 
 
-
-            Column(
+            Center(
+              child: Container(
+                width: MediaQuery.of(context).size.width / 2.5,
+                child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.max,
@@ -215,6 +218,8 @@ Padding(
             ),
         ],
       ),
+              ),
+            ),
           ],
         ),
       ),

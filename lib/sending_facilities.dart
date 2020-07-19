@@ -1,8 +1,8 @@
 import 'dart:async';
-import 'dart:io';
+import 'dart:html';
 
-import 'package:doctors_voice_mobile/new_patient.dart';
-import 'package:doctors_voice_mobile/twilio_whatsapp.dart';
+import 'new_patient.dart';
+import 'twilio_whatsapp.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:http/http.dart' as http;

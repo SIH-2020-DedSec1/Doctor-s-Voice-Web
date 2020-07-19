@@ -1,4 +1,4 @@
-import 'package:doctors_voice_mobile/dashboard.dart';
+import 'dashboard.dart';
 import 'package:flutter/material.dart';
 import 'package:pdf_viewer_plugin/pdf_viewer_plugin.dart';
 
