@@ -7,7 +7,6 @@ import 'PDFPreviewScreen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 
@@ -78,7 +77,6 @@ class DashboardState extends State<DashboardStateful> with TickerProviderStateMi
     userName = widget.firebaseUser.displayName == null ? "there" : widget.firebaseUser.displayName;
 
     FirebaseAuth.instance.currentUser().then((value) {
-
 
         Firestore.instance.collection('doctors').document(value.email).collection('personal_info').document('data').get().then((value) {
           hospitalName = value['hospitalName'];
@@ -344,13 +342,8 @@ class DashboardState extends State<DashboardStateful> with TickerProviderStateMi
   }
 
   Widget dashboardMenu(BuildContext context) {
-    return AnimatedPositioned(
-      duration: Duration(milliseconds: 500,),
-      curve: Curves.linearToEaseOut,
-      top: isCollapsed ? 0 : 0.1 * screenHeight,
-      bottom: isCollapsed ? 0 : 0.1 * screenWidth,
-      left: isCollapsed ? 0 : 0.6 * screenWidth,
-      right: isCollapsed ? 0 : -0.4 * screenHeight,
+    return Positioned(
+      left: 0.2 * screenWidth,
       child: Material(
 
         elevation: 16.0,
@@ -637,13 +630,8 @@ class DashboardState extends State<DashboardStateful> with TickerProviderStateMi
 
 
   Widget profileMenu(BuildContext context) {
-    return AnimatedPositioned(
-      duration: Duration(milliseconds: 500,),
-      curve: Curves.linearToEaseOut,
-      top: isCollapsed ? 0 : 0.1 * screenHeight,
-      bottom: isCollapsed ? 0 : 0.1 * screenWidth,
-      left: isCollapsed ? 0 : 0.6 * screenWidth,
-      right: isCollapsed ? 0 : -0.4 * screenHeight,
+    return Positioned(
+      left:  0.2 * screenWidth,
       child: Material(
 
         elevation: 16.0,
@@ -864,13 +852,8 @@ class DashboardState extends State<DashboardStateful> with TickerProviderStateMi
 
 
   Widget historyData(BuildContext context) {
-    return AnimatedPositioned(
-      duration: Duration(milliseconds: 500,),
-      curve: Curves.linearToEaseOut,
-      top: isCollapsed ? 0 : 0.1 * screenHeight,
-      bottom: isCollapsed ? 0 : 0.1 * screenWidth,
-      left: isCollapsed ? 0 : 0.6 * screenWidth,
-      right: isCollapsed ? 0 : -0.4 * screenHeight,
+    return Positioned(
+      left: 0.2 * screenWidth,
       child: Material(
 
         elevation: 16.0,
@@ -1072,10 +1055,8 @@ class DashboardState extends State<DashboardStateful> with TickerProviderStateMi
 
 
   Widget aboutUs(BuildContext context) {
-    return AnimatedPositioned(
-      duration: Duration(milliseconds: 500,),
-      curve: Curves.linearToEaseOut,
-      left: 0.6 * screenWidth,
+    return Positioned(
+      left: 0.2 * screenWidth,
       child: Material(
 
         elevation: 16.0,
