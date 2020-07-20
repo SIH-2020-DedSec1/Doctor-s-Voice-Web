@@ -3,17 +3,16 @@ import 'dart:typed_data';
 
 import 'package:bezier_chart/bezier_chart.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'PDFPreviewScreen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:permission_handler/permission_handler.dart';
-
 import 'curvesAnimation.dart';
 import 'new_patient.dart';
 
 import 'package:http/http.dart' as http;
+
+import 'dart:js' as js;
 
 void main() {
   runApp(Dashboard());
@@ -67,9 +66,11 @@ class DashboardState extends State<DashboardStateful> with TickerProviderStateMi
 
   int isSelectedNumber = 0;
 
-
-
   String hospitalName;
+
+  void _launchURL(String url) async {
+    js.context.callMethod("open", [url]);
+  }
 
   void initState() {
     super.initState();
@@ -77,6 +78,7 @@ class DashboardState extends State<DashboardStateful> with TickerProviderStateMi
     userName = widget.firebaseUser.displayName == null ? "there" : widget.firebaseUser.displayName;
 
     FirebaseAuth.instance.currentUser().then((value) {
+
 
         Firestore.instance.collection('doctors').document(value.email).collection('personal_info').document('data').get().then((value) {
           hospitalName = value['hospitalName'];
@@ -91,18 +93,6 @@ class DashboardState extends State<DashboardStateful> with TickerProviderStateMi
 
 
 
-
-    final PermissionHandler _permissionHandler = PermissionHandler();
-
-    _permissionHandler.checkPermissionStatus(PermissionGroup.microphone).then((value) {
-          if(value == PermissionStatus.granted) {
-
-          } else {
-    _permissionHandler.requestPermissions([PermissionGroup.microphone, PermissionGroup.storage]).then((value) {
-
-    });
-          }
-    });
   }
 
   bool isFabClosed = false;
@@ -178,6 +168,8 @@ class DashboardState extends State<DashboardStateful> with TickerProviderStateMi
     )) ?? false;
   }
 
+
+  bool onLoaded = true;
 
   List<Widget> listForHistory = new List<Widget>();
 
@@ -342,13 +334,18 @@ class DashboardState extends State<DashboardStateful> with TickerProviderStateMi
   }
 
   Widget dashboardMenu(BuildContext context) {
-    return Positioned(
-      left: 0.2 * screenWidth,
+    return AnimatedPositioned(
+      duration: Duration(milliseconds: 500,),
+      curve: Curves.linearToEaseOut,
+      top: isCollapsed ? 0 : 0 * screenHeight,
+      bottom: isCollapsed ? 0 : 0 * screenWidth,
+      left: isCollapsed ? 0 : screenWidth > 600 ? 0.2 * screenWidth : 0.4 * screenWidth,
+      right: isCollapsed ? 0 : -0 * screenHeight,
       child: Material(
 
         elevation: 16.0,
         
-          borderRadius: BorderRadius.circular(16.0),
+          borderRadius: isCollapsed ? BorderRadius.circular(0.0) : BorderRadius.circular(16.0),
           color: Colors.white,
              
       child: SingleChildScrollView(
@@ -386,7 +383,11 @@ class DashboardState extends State<DashboardStateful> with TickerProviderStateMi
         
 
 
+            Center(
+              child: Container(      
+                width: MediaQuery.of(context).size.width > 600 ? MediaQuery.of(context).size.width / 2.5 : MediaQuery.of(context).size.width,
 
+                child: 
           Padding(
             padding: EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 16.0),
             child: Text("Hello $userName!",
@@ -399,10 +400,16 @@ class DashboardState extends State<DashboardStateful> with TickerProviderStateMi
               ),
             ),
           ),
+              ),
+            ),
 
-            Padding(
+           
+           Center(
+             child:  Padding(
               padding: EdgeInsets.all(8.0),
-              child: Card(
+              child: Container(      width: MediaQuery.of(context).size.width > 600 ? MediaQuery.of(context).size.width / 2.5 : MediaQuery.of(context).size.width,
+
+                child: Card(
                 color: Colors.blue.shade500,
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.0)),
               elevation: 2.0,
@@ -435,15 +442,20 @@ class DashboardState extends State<DashboardStateful> with TickerProviderStateMi
                 ],
               ),
             ),
+              ),
             ),
+           ),
 
 
 
 
-
+            Center(
+              child: 
             Padding(
               padding: EdgeInsets.all(8.0),
-              child: Card(
+              child: Container(
+      width: MediaQuery.of(context).size.width > 600 ? MediaQuery.of(context).size.width / 2.5 : MediaQuery.of(context).size.width,
+                child: Card(
                 color: Colors.pink.shade500,
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.0)),
               elevation: 2.0,
@@ -451,7 +463,7 @@ class DashboardState extends State<DashboardStateful> with TickerProviderStateMi
               
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                mainAxisSize: MainAxisSize.min,
+                mainAxisSize: MainAxisSize.max,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Padding(
@@ -462,10 +474,15 @@ class DashboardState extends State<DashboardStateful> with TickerProviderStateMi
 
                   Padding(
                     padding: EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 16.0),
-                    child:  Text("In olden days, Doctors used to wear a rat mask as a recognition.", style: TextStyle(color: Colors.white, fontSize: 16.0), textAlign: TextAlign.start,)
+                    child:  Container(
+                      width: MediaQuery.of(context).size.width / 2.5,
+                      child: Text("In olden days, Doctors used to wear a rat mask as a recognition. ", style: TextStyle(color: Colors.white, fontSize: 16.0), textAlign: TextAlign.start,),
+                    ),
                   ),
 
                 ],
+              ),
+            ),
               ),
             ),
             ),
@@ -478,12 +495,14 @@ class DashboardState extends State<DashboardStateful> with TickerProviderStateMi
 
 
 
-
-
+              Center(
+                child: 
 
             Padding(
               padding: EdgeInsets.all(8.0),
-              child: Card(
+              child: Container(
+      width: MediaQuery.of(context).size.width > 600 ? MediaQuery.of(context).size.width / 2.5 : MediaQuery.of(context).size.width,
+                child: Card(
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.0)),
               elevation: 2.0,
               shadowColor: Colors.indigo,
@@ -550,60 +569,11 @@ class DashboardState extends State<DashboardStateful> with TickerProviderStateMi
                 ],
               ),
             ),
+              ),
             ),
+              ),
 
 
-
-
-
-            // Padding(
-            //   padding: EdgeInsets.all(8.0),
-            //   child: Card(
-            //     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.0)),
-            //   elevation: 24.0,
-            //   shadowColor: Colors.indigo,
-              
-            //   child: Column(
-            //     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            //     mainAxisSize: MainAxisSize.min,
-            //     crossAxisAlignment: CrossAxisAlignment.start,
-            //     children: [
-            //       Padding(
-            //         padding: EdgeInsets.all(16.0),
-            //         child: 
-            //       Text("Predicted Patients Number", style: TextStyle(fontSize: 20.0, fontFamily: 'Manrope', fontWeight: FontWeight.w700),),
-            //       ),
-            //      ListView.builder(
-            // padding: EdgeInsets.all(8.0),
-            //        dragStartBehavior: DragStartBehavior.down,
-            //             shrinkWrap: true,
-            //             physics: NeverScrollableScrollPhysics(),
-            //             itemCount: 3,
-            //             itemBuilder: (context, num) {
-            //               return new Padding(
-            //                   padding: EdgeInsets.all(8.0),
-            //                   child: Text("${num+1}. ${litems[num]}"),
-            //                 );
-            //             }
-            //           ),
-
-            //           Padding(
-            //             padding: EdgeInsets.all(16.0),
-            //             child: RaisedButton(
-            //               elevation: 24.0,
-            //               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.0)),
-            //               color: Colors.teal.shade900,
-            //               onPressed: () {},
-            //               child: Padding(
-            //               padding: EdgeInsets.all(16.0),
-            //               child: Text("Show more", style: TextStyle(color: Colors.white),),
-            //             ),
-            //             ),
-            //           ),
-            //     ],
-            //   ),
-            // ),
-            // ),
 
 
 
@@ -630,27 +600,19 @@ class DashboardState extends State<DashboardStateful> with TickerProviderStateMi
 
 
   Widget profileMenu(BuildContext context) {
-    return Positioned(
-      left:  0.2 * screenWidth,
+    return AnimatedPositioned(
+      duration: Duration(milliseconds: 500,),
+      curve: Curves.linearToEaseOut,
+      top: isCollapsed ? 0 : 0 * screenHeight,
+      bottom: isCollapsed ? 0 : 0 * screenWidth,
+      left: isCollapsed ? 0 : screenWidth > 600 ? 0.2 * screenWidth : 0.4 * screenWidth,
+      right: isCollapsed ? 0 : -0 * screenHeight,
       child: Material(
 
         elevation: 16.0,
         
-          borderRadius: BorderRadius.circular(16.0),
+          borderRadius: isCollapsed ? BorderRadius.circular(0.0) : BorderRadius.circular(16.0),
           color: Colors.white,
-             
-      // bottomNavigationBar: FABBottomAppBar(
-      //   onTabSelected: _selectedTab,
-      //   selectedColor: Colors.teal,
-
-      //   notchedShape: CircularNotchedRectangle(),
-      //   items: [
-      //     FABBottomAppBarItem(iconData: Icons.history, text: 'History'),
-      //     FABBottomAppBarItem(iconData: Icons.healing, text: 'Suggestions'),
-      //     FABBottomAppBarItem(iconData: Icons.dashboard, text: 'Bottom'),
-      //     FABBottomAppBarItem(iconData: Icons.info, text: 'Bar'),
-      //     ],
-      //   ),
       child: SingleChildScrollView(
         child: Stack(
           children: [
@@ -695,10 +657,13 @@ class DashboardState extends State<DashboardStateful> with TickerProviderStateMi
         
 
 
-
+          
           Padding(
             padding: EdgeInsets.fromLTRB(20.0, 16.0, 16.0, 16.0),
-            child: Text("Profile",
+            child: Center(
+            child: Container(
+      width: MediaQuery.of(context).size.width > 600 ? MediaQuery.of(context).size.width / 2.5 : MediaQuery.of(context).size.width,
+      child: Text("Profile",
             textAlign: TextAlign.start,
               style: TextStyle(fontFamily: 'Manrope',
               
@@ -708,10 +673,15 @@ class DashboardState extends State<DashboardStateful> with TickerProviderStateMi
               ),
             ),
           ),
+          ),
+          ),
 
             Padding(
               padding: EdgeInsets.all(8.0),
-              child: Card(
+              child: Center(
+                child: Container(
+      width: MediaQuery.of(context).size.width > 600 ? MediaQuery.of(context).size.width / 2.5 : MediaQuery.of(context).size.width,
+                  child: Card(
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.0)),
               elevation: 2.0,
               shadowColor: Colors.indigo,
@@ -754,6 +724,8 @@ class DashboardState extends State<DashboardStateful> with TickerProviderStateMi
               ),
               ),
             ),
+                ),
+              ),
             ),
 
 
@@ -764,7 +736,10 @@ class DashboardState extends State<DashboardStateful> with TickerProviderStateMi
 
             Padding(
               padding: EdgeInsets.all(8.0),
-              child: Card(
+              child: Center(
+                child: Container(
+      width: MediaQuery.of(context).size.width > 600 ? MediaQuery.of(context).size.width / 2.5 : MediaQuery.of(context).size.width,
+                  child: Card(
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.0)),
               elevation: 2.0,
               shadowColor: Colors.indigo,
@@ -825,6 +800,8 @@ class DashboardState extends State<DashboardStateful> with TickerProviderStateMi
                 ],
               ),
             ),
+                ),
+              ),
             ),
 
 
@@ -852,27 +829,20 @@ class DashboardState extends State<DashboardStateful> with TickerProviderStateMi
 
 
   Widget historyData(BuildContext context) {
-    return Positioned(
-      left: 0.2 * screenWidth,
+    return AnimatedPositioned(
+      duration: Duration(milliseconds: 500,),
+      curve: Curves.linearToEaseOut,
+      top: isCollapsed ? 0 : 0 * screenHeight,
+      bottom: isCollapsed ? 0 : 0 * screenWidth,
+      left: isCollapsed ? 0 : screenWidth > 600 ? 0.2 * screenWidth : 0.4 * screenWidth,
+      right: isCollapsed ? 0 : -0 * screenHeight,
       child: Material(
 
         elevation: 16.0,
         
-          borderRadius: BorderRadius.circular(16.0),
+          borderRadius: isCollapsed ? BorderRadius.circular(0.0) : BorderRadius.circular(16.0),
           color: Colors.white,
-             
-      // bottomNavigationBar: FABBottomAppBar(
-      //   onTabSelected: _selectedTab,
-      //   selectedColor: Colors.teal,
 
-      //   notchedShape: CircularNotchedRectangle(),
-      //   items: [
-      //     FABBottomAppBarItem(iconData: Icons.history, text: 'History'),
-      //     FABBottomAppBarItem(iconData: Icons.healing, text: 'Suggestions'),
-      //     FABBottomAppBarItem(iconData: Icons.dashboard, text: 'Bottom'),
-      //     FABBottomAppBarItem(iconData: Icons.info, text: 'Bar'),
-      //     ],
-      //   ),
       child: SingleChildScrollView(
         child: Stack(
           children: [
@@ -913,13 +883,18 @@ class DashboardState extends State<DashboardStateful> with TickerProviderStateMi
 
           Padding(
             padding: EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 0.0),
-            child: Text("History",
+            child: Center(
+              child: Container(
+      width: MediaQuery.of(context).size.width > 600 ? MediaQuery.of(context).size.width / 2.5 : MediaQuery.of(context).size.width,
+                child: Text("History",
             textAlign: TextAlign.start,
               style: TextStyle(fontFamily: 'Manrope',
               
               fontSize: 24.0,
               fontWeight: FontWeight.w700,
               color: Colors.black
+              ),
+            ),
               ),
             ),
           ),
@@ -939,53 +914,23 @@ class DashboardState extends State<DashboardStateful> with TickerProviderStateMi
               children: snapshot.data.documents.map((DocumentSnapshot document) {
                 return new Padding(
                   padding: EdgeInsets.all(8.0),
-                  child: Card(
+                  child: Center(
+                    child: Container(
+      width: MediaQuery.of(context).size.width > 600 ? MediaQuery.of(context).size.width / 2.5 : MediaQuery.of(context).size.width,
+                      child: Card(
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.0)),
                   child: ListTile(
                   trailing: IconButton(icon: Icon(Icons.chevron_right), onPressed: () {
 
+                  _launchURL(document['pdfLink']);
 
-                            showDialog(
-      context: context,
-      builder: (context) => new AlertDialog(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.0)),
-        content: new Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-
-            Center(
-              child: Padding(
-                padding: EdgeInsets.all(8.0),
-                child: Text("Processing"),
-              ),
-            ),
-
-            Center(
-              child: Padding(
-                padding: EdgeInsets.all(8.0),
-                child: CircularProgressIndicator(),
-              ),
-            ),
-
-          ],
-        ),
-        
-      ),
-    );
-
-
-                    loadPdf(document['pdfLink']).then((value) {
-
-
-      Navigator.of(context, rootNavigator: true).pop('dialog');
-                    Navigator.of(context).push(MaterialPageRoute(builder: (context) => new PdfPreviewScreenForHistory(path: linkedOnes,)));
-
-                    });
                   },),
                   title: new Text(document['patient_uid']),
                   subtitle: new Text(document.documentID),
                 ),
                 ),
+                    ),
+                  ),
                 );
               }).toList(),
             );
@@ -1006,76 +951,21 @@ class DashboardState extends State<DashboardStateful> with TickerProviderStateMi
 
 
 
-
-  String linkedOnes;
-
-
-  Future<String> get _localPath async {
-    final directory = await getApplicationDocumentsDirectory();
-
-    return directory.path;
-  }
-
-  Future<File> get _localFile async {
-    final filePath = await _localPath;
-    return File('$filePath/test.pdf');
-  }
-
-
-  Future<File> writeCounter(Uint8List stream) async {
-    File file = await _localFile;
-    return file.writeAsBytes(stream);
-  }
-
-  Future<Uint8List> fetchPost(String url) async {
-    final response = await http.get(url);
-    final responseJson = response.bodyBytes;
-    return responseJson;
-  }
-
-  Future<void> loadPdf(String url) async {
-    writeCounter(await fetchPost(url));
-    linkedOnes = (await _localFile).path;
-
-    if (!mounted) return;
-
-  }
-
-  
-
-
-
-
-
-
-
-
-
-
-
-
   Widget aboutUs(BuildContext context) {
-    return Positioned(
-      left: 0.2 * screenWidth,
+    return AnimatedPositioned(
+      duration: Duration(milliseconds: 500,),
+      curve: Curves.linearToEaseOut,
+      top: isCollapsed ? 0 : 0 * screenHeight,
+      bottom: isCollapsed ? 0 : 0 * screenWidth,
+      left: isCollapsed ? 0 : screenWidth > 600 ? 0.2 * screenWidth : 0.4 * screenWidth,
+      right: isCollapsed ? 0 : -0 * screenHeight,
       child: Material(
 
         elevation: 16.0,
         
-          borderRadius: BorderRadius.circular(16.0),
+          borderRadius: isCollapsed ? BorderRadius.circular(0.0) : BorderRadius.circular(16.0),
           color: Colors.white,
              
-      // bottomNavigationBar: FABBottomAppBar(
-      //   onTabSelected: _selectedTab,
-      //   selectedColor: Colors.teal,
-
-      //   notchedShape: CircularNotchedRectangle(),
-      //   items: [
-      //     FABBottomAppBarItem(iconData: Icons.history, text: 'History'),
-      //     FABBottomAppBarItem(iconData: Icons.healing, text: 'Suggestions'),
-      //     FABBottomAppBarItem(iconData: Icons.dashboard, text: 'Bottom'),
-      //     FABBottomAppBarItem(iconData: Icons.info, text: 'Bar'),
-      //     ],
-      //   ),
       child: SingleChildScrollView(
         child: Stack(
           children: [
@@ -1120,13 +1010,18 @@ class DashboardState extends State<DashboardStateful> with TickerProviderStateMi
 
           Padding(
             padding: EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 16.0),
-            child: Text("About us",
+            child: Center(
+              child: Container(
+      width: MediaQuery.of(context).size.width > 600 ? MediaQuery.of(context).size.width / 2.5 : MediaQuery.of(context).size.width,
+                child: Text("About us",
             textAlign: TextAlign.start,
               style: TextStyle(fontFamily: 'Manrope',
               
               fontSize: 24.0,
               fontWeight: FontWeight.w700,
               color: Colors.black
+              ),
+            ),
               ),
             ),
           ),
@@ -1137,11 +1032,14 @@ class DashboardState extends State<DashboardStateful> with TickerProviderStateMi
 
 
 
-
+     // width: MediaQuery.of(context).size.width > 600 ? MediaQuery.of(context).size.width / 2.5 : MediaQuery.of(context).size.width,
 
             Padding(
               padding: EdgeInsets.all(8.0),
-              child: Card(
+              child: Center(
+                child: Container( 
+                  width: MediaQuery.of(context).size.width > 600 ? MediaQuery.of(context).size.width / 2.5 : MediaQuery.of(context).size.width,
+                  child: Card(
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.0)),
               elevation: 2.0,
               shadowColor: Colors.indigo,
@@ -1161,6 +1059,8 @@ class DashboardState extends State<DashboardStateful> with TickerProviderStateMi
                 ],
               ),
             ),
+                ),
+              ),
             ),
 
 
@@ -1169,7 +1069,10 @@ class DashboardState extends State<DashboardStateful> with TickerProviderStateMi
 
             Padding(
               padding: EdgeInsets.all(8.0),
-              child: Card(
+              child: Center(
+                child: Container(
+                  width: MediaQuery.of(context).size.width > 600 ? MediaQuery.of(context).size.width / 2.5 : MediaQuery.of(context).size.width,
+                  child: Card(
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.0)),
               elevation: 2.0,
               shadowColor: Colors.indigo,
@@ -1187,6 +1090,8 @@ class DashboardState extends State<DashboardStateful> with TickerProviderStateMi
                 ],
               ),
             ),
+                ),
+              ),
             ),
 
 
