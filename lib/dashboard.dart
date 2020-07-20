@@ -549,7 +549,7 @@ class DashboardState extends State<DashboardStateful> with TickerProviderStateMi
           showVerticalIndicator: true,
           verticalLineFullHeight: true,
           verticalIndicatorFixedPosition: false,
-          contentWidth: MediaQuery.of(context).size.width / 1.4,
+          contentWidth: MediaQuery.of(context).size.width / 3,
           pinchZoom: false,
           backgroundColor: Colors.white,
           snap: false,
@@ -804,12 +804,6 @@ class DashboardState extends State<DashboardStateful> with TickerProviderStateMi
               ),
             ),
 
-
-
-
-
-
-
         ],
       ),
           ],
@@ -818,12 +812,6 @@ class DashboardState extends State<DashboardStateful> with TickerProviderStateMi
     ),
     );
   }
-
-
-
-
-
-
 
 
 
