@@ -1,4 +1,5 @@
 
+import 'dart:html';
 import 'dart:typed_data';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'recorder_thing.dart';
@@ -16,6 +17,7 @@ import 'package:pdf/widgets.dart' as pw;
 import 'dart:html' as html;
 
 import 'package:http/http.dart' as http;
+
 
 
 class NewPatient extends StatelessWidget {
@@ -409,7 +411,7 @@ class NewPatientState extends State<NewPatientStateful> with TickerProviderState
               isRecording = !isRecording;
 
 
-                  // webRecorder.openRecorder(); 
+                  webRecorder.openRecorder(); 
 
 
              }, 
@@ -891,7 +893,20 @@ class NewPatientState extends State<NewPatientStateful> with TickerProviderState
 
 
   getStorageQuotaBro() {
+
+    html.window.requestFileSystem(1024 * 1024).then((value) {
+      gotLocalStoragePermissionBro(value);
+    });
     
+  }
+
+  gotLocalStoragePermissionBro(html.FileSystem value) {
+    value.root.createFile("file.pdf").then((x) {
+      
+      value.root.getFile("file.pdf").then((y) {
+          
+      });
+    });
   }
 
   // writeOnPdf() async {
