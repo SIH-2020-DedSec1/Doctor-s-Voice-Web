@@ -1,8 +1,10 @@
 
-import 'dart:io';
 import 'dart:typed_data';
 
+import 'dart:html' as html;
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:doctors_voice_web/speech_thingy.dart';
+import 'recorder_thing.dart';
 import 'curvesAnimation.dart';
 import 'dashboard.dart';
 import 'sending_facilities.dart';
@@ -11,11 +13,13 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 
 import 'package:intl/intl.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 
 import 'PDFPreviewScreen.dart';
+
+
+import 'dart:js' as js;
 
 import 'package:http/http.dart' as http;
 
@@ -53,22 +57,22 @@ class NewPatientStateful extends StatefulWidget {
 BuildContext buildContextOfNewPatient;
 class NewPatientState extends State<NewPatientStateful> with TickerProviderStateMixin{
 
-  bool isRecording = false;
 
   final pdf = pw.Document();
 
 
   // SpeechRecognition _speech;
 
-  bool _speechRecognitionAvailable = false;
+  // bool _speechRecognitionAvailable = false;
   String totalTranscript = "";
   String transcription = '';
   String selectedLang = 'en_US';
 
 
-String dateTime = DateFormat('yyyy-MM-dd_kk:mm').format(DateTime.now());
+  WebRecorder webRecorder;
+  bool isRecording;
 
-
+  String dateTime = DateFormat('yyyy-MM-dd_kk:mm').format(DateTime.now());
 
   TextEditingController patientNameController = new TextEditingController();
   TextEditingController patientGenderController = new TextEditingController();
@@ -86,12 +90,35 @@ String dateTime = DateFormat('yyyy-MM-dd_kk:mm').format(DateTime.now());
   String hospitalName;
 
 
+
+
+    List<dynamic> audioChunks = [];
+
+
+  whenRecorderStart(){
+    print('Recorder Started');
+    setState(() {}); 
+  }
+
+  whenRecorderStop(){
+    print('Recorder Stopped'); 
+    setState(() {}); 
+  }
+
+
+
   void initState() {
     super.initState();
     // activateSpeechRecognizer();
 
 
 
+
+  webRecorder = WebRecorder(
+    whenRecorderStart: whenRecorderStart,
+    whenRecorderStop: whenRecorderStop,
+  );
+  
 
     uniqueId.value = TextEditingValue(
       text: "DV-",
@@ -110,11 +137,6 @@ String dateTime = DateFormat('yyyy-MM-dd_kk:mm').format(DateTime.now());
         
     });
 
-
-
-                            
-
-
     http.get(
       "https://www.clipartkey.com/mpngs/m/130-1303838_first-step-pediatrician-female-doctor-logo-png.png",
       ).then((value) => {
@@ -125,53 +147,6 @@ String dateTime = DateFormat('yyyy-MM-dd_kk:mm').format(DateTime.now());
   }
 
 
-
-
-  //   void activateSpeechRecognizer() {
-  //   print('_MyAppState.activateSpeechRecognizer... ');
-  //   _speech = new SpeechRecognition();
-  //   _speech.setAvailabilityHandler(onSpeechAvailability);
-  //   _speech.setRecognitionStartedHandler(onRecognitionStarted);
-  //   _speech.setRecognitionResultHandler(onRecognitionResult);
-  //   _speech.setRecognitionCompleteHandler(onRecognitionComplete);
-  //   _speech
-  //       .activate()
-  //       .then((res) => setState(() => _speechRecognitionAvailable = res));
-  // }
-
-
-
-  // void start() => _speech
-  //     .listen(locale: selectedLang)
-  //     .then((result) {
-  //       print('_MyAppState.start => result $result');
-
-  //       setState(() {
-          
-  //       });
-  //     });
-
-  // void cancel() =>
-  //     _speech.cancel().then((result) => setState(() {isRecording = result;
-      
-  //             print("Status $isRecording");
-              
-  //             }));
-
-  // void stop() => _speech.stop().then((result) {
-  //       setState(() => isRecording = result);
-  //     });
-
-  // void onSpeechAvailability(bool result) =>
-  //     setState(() => _speechRecognitionAvailable = result);
-
-
-  // void onRecognitionStarted() => setState(() => isRecording = true);
-
-  // void onRecognitionResult(String text) => setState(() {
-  //   transcription = text;
-
-  // });
 
 
   // void onRecognitionComplete(String ok) => setState(() {
@@ -236,28 +211,11 @@ String dateTime = DateFormat('yyyy-MM-dd_kk:mm').format(DateTime.now());
 
   //     }
 
-
-  //   // response(transcription);
   // });
+
 
   bool uploadingPdfDone = true;
 
-  // void response(query) async {
-  //   AuthGoogle authGoogle = await AuthGoogle(fileJson: "assets/smartindiahackathon-2020-3534b86566c0.json").build();
-  //   Dialogflow dialogflow =Dialogflow(authGoogle: authGoogle);
-  //   AIResponse response = await dialogflow.detectIntent(query);
-  //   setState(() {
-  //     messageOutput = response.getMessage();
-  //     print(messageOutput);
-
-  //     QueryResult responseData = response.queryResult;
-
-  //     totalTranscript = totalTranscript + "[BOT]: " + messageOutput + "\n";
-  //     patientNameController.text = responseData == null ? '' : responseData.parameters['given-name'] == null ? '' : responseData.parameters['given-name'].toString();
-  //     patientGenderController.text = responseData == null ? '' : responseData.parameters['genderValue'] == null ? '' : responseData.parameters['genderValue'].toString() == null ? '' : responseData.parameters['genderValue'].toString();
-  //     patientAgeController.text = responseData == null ? '' : responseData.parameters['age'] == null || responseData.parameters['age'] is String ? ''  : responseData.parameters['age']['amount'].toString();
-  //   });
-  // }
 
   bool isClicked = false;
   Widget showHelpCard() {
@@ -270,14 +228,6 @@ String dateTime = DateFormat('yyyy-MM-dd_kk:mm').format(DateTime.now());
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: isClicked ? [
-
-            
-
-            // Padding(
-            //   padding: EdgeInsets.all(16.0),
-            //   child: Text("Basic functions which can be performed", style: TextStyle(fontFamily: 'Manrope', fontSize: 20.0, fontWeight: FontWeight.w700)),
-            // ),
-
 
             Padding(
               padding: EdgeInsets.all(16.0),
@@ -382,6 +332,8 @@ String dateTime = DateFormat('yyyy-MM-dd_kk:mm').format(DateTime.now());
     );
   }
 
+
+
   @override
   Widget build(BuildContext context) {
 
@@ -408,18 +360,10 @@ String dateTime = DateFormat('yyyy-MM-dd_kk:mm').format(DateTime.now());
           children: [
 
 
-
-
         CustomPaint(
       painter: NewPatientPainter(),
       size: MediaQuery.of(context).size,
     ),
-
-
-
-
-
-
 
 
             Column(
@@ -484,14 +428,11 @@ String dateTime = DateFormat('yyyy-MM-dd_kk:mm').format(DateTime.now());
              backgroundColor: isRecording ? Colors.red : Colors.green,
              onPressed: () {
               isRecording = !isRecording;
-              if(isRecording && _speechRecognitionAvailable) {
-                // start();
-              } else {
-                // cancel();
-                  setState(() {
-                    isRecording = !isRecording;
-                  });
-                }
+
+
+                  webRecorder.openRecorder(); 
+
+
              }, 
              label: isRecording ? Text("Stop", style: TextStyle(
                fontFamily: 'Manrope',
@@ -508,14 +449,6 @@ String dateTime = DateFormat('yyyy-MM-dd_kk:mm').format(DateTime.now());
             ),
               ),
             ),
-
-
-
-
-
-
-
-
 
 
 
@@ -854,17 +787,17 @@ String dateTime = DateFormat('yyyy-MM-dd_kk:mm').format(DateTime.now());
                           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.0)),
                           color: Colors.green,
                           onPressed: () async {
-                            writeOnPdf();
-                            savePdf();
-                            Directory documentDirectory = await getApplicationDocumentsDirectory();
+                            // writeOnPdf();
+                            // savePdf();
+                            // Directory documentDirectory = await getApplicationDocumentsDirectory();
 
-                            String documentPath = documentDirectory.path;
+                            // String documentPath = documentDirectory.path;
 
-                            String fullPath = "$documentPath/example.pdf";
+                            // String fullPath = "$documentPath/example.pdf";
 
-                            Navigator.push(context, MaterialPageRoute(
-                              builder: (context) => PdfPreviewScreen(path: fullPath,)
-                            ));
+                            // Navigator.push(context, MaterialPageRoute(
+                            //   builder: (context) => PdfPreviewScreen(path: fullPath,)
+                            // ));
                           },
                           child: Padding(
                           padding: EdgeInsets.all(16.0),
@@ -883,13 +816,13 @@ String dateTime = DateFormat('yyyy-MM-dd_kk:mm').format(DateTime.now());
                           color: Colors.blue,
                           onPressed: () async {
 
-                            writeOnPdf();
-                            savePdf();
-                            Directory documentDirectory = await getApplicationDocumentsDirectory();
+                            // writeOnPdf();
+                            // savePdf();
+                            // Directory documentDirectory = await getApplicationDocumentsDirectory();
 
-                            String documentPath = documentDirectory.path;
+                            // String documentPath = documentDirectory.path;
 
-                            String fullPath = "$documentPath/example.pdf";
+                            // String fullPath = "$documentPath/example.pdf";
 
                             showDialog(
       context: context,
@@ -918,31 +851,31 @@ String dateTime = DateFormat('yyyy-MM-dd_kk:mm').format(DateTime.now());
         
       ),
     );
-                            final StorageReference ref =
-                                FirebaseStorage.instance.ref().child('pdf').child('${firebaseUserThing.email}_${uniqueId.text}_$dateTime.pdf');
-                            StorageUploadTask uploadTask = ref.putFile(
-                              File(fullPath),
-                              StorageMetadata(
-                                contentLanguage: 'en',
-                              ),
-                            );
+                            // final StorageReference ref =
+                            //     FirebaseStorage.instance.ref().child('pdf').child('${firebaseUserThing.email}_${uniqueId.text}_$dateTime.pdf');
+                            // StorageUploadTask uploadTask = ref.putFile(
+                            //   File(fullPath),
+                            //   StorageMetadata(
+                            //     contentLanguage: 'en',
+                            //   ),
+                            // );
 
-await (await uploadTask.onComplete).ref.getDownloadURL().then((value) {
-
-
-
-                            Firestore.instance.collection('doctors').document(firebaseUserThing.email).collection('patients_operated').document(dateTime).setData({
-                              'patient_uid': uniqueId.text,
-                              'pdfLink': value.toString(),
-                            }).then((xx) {
-      Navigator.of(context, rootNavigator: true).pop('dialog');
-      Navigator.of(context).push(MaterialPageRoute(builder: (context) =>  SendingFacilities(title: value.toString())));
-
-                            });
+// await (await uploadTask.onComplete).ref.getDownloadURL().then((value) {
 
 
 
-    });
+//                             Firestore.instance.collection('doctors').document(firebaseUserThing.email).collection('patients_operated').document(dateTime).setData({
+//                               'patient_uid': uniqueId.text,
+//                               'pdfLink': value.toString(),
+//                             }).then((xx) {
+//       Navigator.of(context, rootNavigator: true).pop('dialog');
+//       Navigator.of(context).push(MaterialPageRoute(builder: (context) =>  SendingFacilities(title: value.toString())));
+
+//                             });
+
+
+
+//     });
 
 
                             
@@ -1220,13 +1153,16 @@ await (await uploadTask.onComplete).ref.getDownloadURL().then((value) {
   }
 
   Future savePdf() async{
-    Directory documentDirectory = await getApplicationDocumentsDirectory();
 
-    String documentPath = documentDirectory.path;
 
-    File file = File("$documentPath/example.pdf");
 
-    file.writeAsBytesSync(pdf.save());
+  //   Directory documentDirectory = await getApplicationDocumentsDirectory();
+
+  //   String documentPath = documentDirectory.path;
+
+  //   File file = File("$documentPath/example.pdf");
+
+  //   file.writeAsBytesSync(pdf.save());
   }
 
 

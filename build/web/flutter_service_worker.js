@@ -7,7 +7,7 @@ const RESOURCES = {
 "icons/Icon-192.png": "ac9a721a12bbc803b44f645561ecb1e1",
 "assets/FontManifest.json": "9bc483c2de70b40a1fb3d3d8d4c6008b",
 "assets/AssetManifest.json": "9fda2156b24816a66a18dbabf2f65e51",
-"assets/NOTICES": "3897bb56478e2a0c5600b2e5e218382b",
+"assets/NOTICES": "30196b5e41c40cc3215b362e1ec347d0",
 "assets/assets/Manrope-Bold.ttf": "656753569aef606dd528cc6bdf672cdc",
 "assets/assets/Manrope-Medium.ttf": "6196e0dab83345b15290ee22620358c1",
 "assets/assets/Manrope-Regular.ttf": "0b726174d2b7e161b9e5e8125bf7751a",
@@ -17,7 +17,7 @@ const RESOURCES = {
 "index.html": "6c88a67ff5aa957cfdfeff0f18e6b992",
 "/": "6c88a67ff5aa957cfdfeff0f18e6b992",
 "favicon.png": "5dcef449791fa27946b3d35ad8803796",
-"main.dart.js": "bc7fe939b3f84ebce4b466906ed9838c"
+"main.dart.js": "615d18465ce08312c80d194b3e4d92d5"
 };
 
 // The application shell files that are downloaded before a service worker can
