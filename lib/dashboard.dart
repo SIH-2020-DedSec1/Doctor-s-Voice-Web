@@ -1,27 +1,15 @@
-import 'dart:io';
-import 'dart:typed_data';
-
 import 'package:bezier_chart/bezier_chart.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:path_provider/path_provider.dart';
 import 'curvesAnimation.dart';
 import 'new_patient.dart';
-
-import 'package:http/http.dart' as http;
-
 import 'dart:js' as js;
 
 void main() {
   runApp(Dashboard());
 }
-
-
-
-
-
 
 class Dashboard extends StatelessWidget {
 

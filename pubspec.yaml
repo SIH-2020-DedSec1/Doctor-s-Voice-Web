@@ -44,8 +44,6 @@ dependencies:
   url_launcher: ^3.0.1
 
   googleapis: ^0.53.0
-
-
   cloud_firestore: ^0.13.7
 
 dev_dependencies:
