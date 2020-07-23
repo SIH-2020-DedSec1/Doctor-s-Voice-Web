@@ -1,4 +1,5 @@
 
+import 'dart:async';
 import 'dart:html';
 import 'dart:typed_data';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -415,13 +416,10 @@ class NewPatientState extends State<NewPatientStateful> with TickerProviderState
              onPressed: () {
               isRecording = !isRecording;
 
-                  
-
-      js.context
-          .callMethod('dictate');
-
-
-
+              setState(() {
+                js.context.callMethod('dictate');
+              });
+          
              }, 
              label: isRecording ? Text("Stop", style: TextStyle(
                fontFamily: 'Manrope',
