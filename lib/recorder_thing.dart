@@ -69,15 +69,13 @@ class WebRecorder {
 
       print(blob.type);
 
-      IBMSpeechToText ibmSpeechToText = new IBMSpeechToText();
-      ibmSpeechToText.doProcess(blob);
+      // IBMSpeechToText ibmSpeechToText = new IBMSpeechToText();
+      // ibmSpeechToText.doProcess(blob);
 
     
     });
   }
 
-  /// Send [html.AudioRecorder] data to the created function [whenReceiveData].
-  // setData(data) => whenReceiveData(data);
 
   dispose(){
     WebRecorder.recorder.removeEventListener('dataavailable', hundlerFunctionStream);

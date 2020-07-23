@@ -9,11 +9,13 @@ class IBMSpeechToText {
 
 
   void getToken() {
-       const tokenUrl = "https://iam.bluemix.net/identity/token";
+       const tokenUrl = "https://stream.watsonplatform.net/authorization/api/v1/token?url=https://stream.watsonplatform.net/speech-to-text/api";
        final authThing = "Basic " + base64.encode(utf8.encode("pnani18dec@gmail.com:Rock1331"));
        http.post(
          tokenUrl,
          headers: {
+           "Content-Type": "application/x-www-form-urlencoded",
+           "Accept": "application/json",
            "Authorization" : authThing,
          }
        ).then((value) {

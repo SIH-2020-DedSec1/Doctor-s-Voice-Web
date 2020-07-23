@@ -15,6 +15,7 @@ import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 
 import 'dart:html' as html;
+import 'dart:js' as js;
 
 import 'package:http/http.dart' as http;
 
@@ -74,9 +75,6 @@ class NewPatientState extends State<NewPatientStateful> with TickerProviderState
   FirebaseUser firebaseUserThing;
 
   String hospitalName;
-
-  List<dynamic> audioChunks = [];
-
 
   whenRecorderStart(){
     print('Recorder Started');
@@ -347,17 +345,6 @@ class NewPatientState extends State<NewPatientStateful> with TickerProviderState
     ),
 
 
-            Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisSize: MainAxisSize.max,
-        children: [
-
-
-          Padding(
-            padding: EdgeInsets.all(20.0),
-            child: Container(),
-          ),
-
 
           Padding(
             padding: EdgeInsets.fromLTRB(8.0, 30.0, 0.0, 4.0),
@@ -369,7 +356,25 @@ class NewPatientState extends State<NewPatientStateful> with TickerProviderState
             ],
           ),
           ),
+
+
+
+            Center(
+              child: Container(
+                width: MediaQuery.of(context).size.width / 2.5,
+                child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.max,
+        children: [
+
+
         
+          Padding(
+            padding: EdgeInsets.all(20.0),
+            child: Container(),
+          ),
+
+
         
             Padding(
 
@@ -410,8 +415,11 @@ class NewPatientState extends State<NewPatientStateful> with TickerProviderState
              onPressed: () {
               isRecording = !isRecording;
 
+                  
 
-                  webRecorder.openRecorder(); 
+      js.context
+          .callMethod('dictate');
+
 
 
              }, 
@@ -883,6 +891,8 @@ class NewPatientState extends State<NewPatientStateful> with TickerProviderState
 
         ],
       ),
+              ),
+            ),
           ],
         ),
       ),
