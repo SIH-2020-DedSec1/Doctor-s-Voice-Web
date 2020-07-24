@@ -3,6 +3,7 @@
 library typed_callback.web;
 
 import 'dart:async';
+import 'dart:convert';
 import 'dart:html';
 import 'dart:typed_data';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -103,6 +104,93 @@ class NewPatientState extends State<NewPatientStateful> with TickerProviderState
     setState(() {}); 
   }
 
+  whenRecorderResult(data) {
+
+
+      http.post(
+        "https://api.eu-gb.speech-to-text.watson.cloud.ibm.com/instances/062d6fda-ee57-430d-b1df-a99d8901cc2c/v1/recognize",
+        headers : {
+          "Accept" : "application/json", 
+          "Authorization" : "Basic " + base64.encode(utf8.encode("apikey:lhCmK873A3w9VGXUX4CEFH5YmwIvlpQoiOSXIebPEyYf")),
+          "Content-Type" : "audio/webm",
+        },
+        body : data,
+      ).then((value) {
+
+        print(value.body);
+      var dataObject = jsonDecode(value.body);
+      transcription = dataObject["results"][0]["alternatives"][0]["transcript"];
+
+
+    totalTranscript = totalTranscript + "[DOCTOR]: " + transcription + "\n";
+
+    String actualInfo = "";
+    List<String> transcriptParsed = transcription.split(" ");
+    List<String> modString = transcriptParsed.sublist(2);
+    modString.forEach((element) {
+      actualInfo = actualInfo  + element + " ";
+    });
+
+      if(transcriptParsed[0] == 'put') {
+        print("Given order :  Adding an element");
+
+
+      switch(transcriptParsed[1]) {
+        case 'name': patientNameController.text = actualInfo; break;
+        case 'age': patientAgeController.text = transcriptParsed[2]; break;
+        case 'gender': patientGenderController.text = transcriptParsed[2]; break;
+        case 'symptom': symptomsP.text == "" ? symptomsP.text = actualInfo : symptomsP.text = symptomsP.text + ", " + actualInfo; print(symptomsP.text); break;
+        case 'diagnosis': diagnosisP.text == "" ? diagnosisP.text = actualInfo : diagnosisP.text = diagnosisP.text + ", " + actualInfo; break;
+        case 'prescription': prescP.text == "" ? prescP.text = actualInfo : prescP.text = prescP.text + ", " + actualInfo; break;
+        case 'advice': advicesP.text == "" ? advicesP.text = actualInfo : advicesP.text = advicesP.text + ", " + actualInfo; break;
+        default : break;
+      }
+
+
+      } else if(transcriptParsed[0]  == 'remove') {
+        print("Given order: Removing an element");
+
+
+      switch(transcriptParsed[1]) {
+        case 'name': patientNameController.text = ""; break;
+        case 'age': patientAgeController.text = ""; break;
+        case 'gender': patientGenderController.text = ""; break;
+        case 'symptoms': symptomsP.text = "";  break;
+        case 'diagnosis': diagnosisP.text = ""; break;
+        case 'prescription': prescP.text = ""; break;
+        case 'advice': advicesP.text = ""; break;
+        default : break;
+      }
+
+
+
+      } else if(transcriptParsed[0]  == "modify") {
+        print("Given order: modifying the element");
+
+
+      switch(transcriptParsed[1]) {
+        case 'name': patientNameController.text = actualInfo; break;
+        case 'age': patientAgeController.text = transcriptParsed[2]; break;
+        case 'gender': patientGenderController.text = transcriptParsed[2]; break;
+        case 'symptom': symptomsP.text = actualInfo;  break;
+        case 'diagnosis': diagnosisP.text = actualInfo; break;
+        case 'prescription': prescP.text = actualInfo; break;
+        case 'advice': advicesP.text = actualInfo; break;
+        default : break;
+                 }
+
+              }
+
+
+setState(() {
+  
+});
+
+      }).catchError((onError) {
+        print(onError.toString());
+      });
+
+  }
 
 
   void initState() {
@@ -111,6 +199,7 @@ class NewPatientState extends State<NewPatientStateful> with TickerProviderState
   webRecorder = WebRecorder(
     whenRecorderStart: whenRecorderStart,
     whenRecorderStop: whenRecorderStop,
+    whenReceiveData:  whenRecorderResult,
   );
   
     uniqueId.value = TextEditingValue(
@@ -135,76 +224,7 @@ class NewPatientState extends State<NewPatientStateful> with TickerProviderState
       imageForPdf = buffer.asUint8List(value.offsetInBytes, value.lengthInBytes);
     });
 
-
-
   }
-
-
-
-
-  // void onRecognitionComplete(String ok) => setState(() {
-  //    isRecording = false;
-  //    transcription = ok;
-  //   totalTranscript = totalTranscript + "[DOCTOR]: " + transcription + "\n";
-
-  //   String actualInfo = "";
-  //   List<String> transcriptParsed = ok.split(" ");
-  //   List<String> modString = transcriptParsed.sublist(2);
-  //   modString.forEach((element) {
-  //     actualInfo = actualInfo  + element + " ";
-  //   });
-
-  //     if(transcriptParsed[0] == 'put') {
-  //       print("Given order :  Adding an element");
-
-
-  //     switch(transcriptParsed[1]) {
-  //       case 'name': patientNameController.text = actualInfo; break;
-  //       case 'age': patientAgeController.text = transcriptParsed[2]; break;
-  //       case 'gender': patientGenderController.text = transcriptParsed[2]; break;
-  //       case 'symptom': symptomsP.text == "" ? symptomsP.text = actualInfo : symptomsP.text = symptomsP.text + ", " + actualInfo; print(symptomsP.text); break;
-  //       case 'diagnosis': diagnosisP.text == "" ? diagnosisP.text = actualInfo : diagnosisP.text = diagnosisP.text + ", " + actualInfo; break;
-  //       case 'prescription': prescP.text == "" ? prescP.text = actualInfo : prescP.text = prescP.text + ", " + actualInfo; break;
-  //       case 'advice': advicesP.text == "" ? advicesP.text = actualInfo : advicesP.text = advicesP.text + ", " + actualInfo; break;
-  //       default : break;
-  //     }
-
-
-  //     } else if(transcriptParsed[0]  == 'remove') {
-  //       print("Given order: Removing an element");
-
-
-  //     switch(transcriptParsed[1]) {
-  //       case 'name': patientNameController.text = ""; break;
-  //       case 'age': patientAgeController.text = ""; break;
-  //       case 'gender': patientGenderController.text = ""; break;
-  //       case 'symptoms': symptomsP.text = "";  break;
-  //       case 'diagnosis': diagnosisP.text = ""; break;
-  //       case 'prescription': prescP.text = ""; break;
-  //       case 'advice': advicesP.text = ""; break;
-  //       default : break;
-  //     }
-
-
-
-  //     } else if(transcriptParsed[0]  == "modify") {
-  //       print("Given order: modifying the element");
-
-
-  //     switch(transcriptParsed[1]) {
-  //       case 'name': patientNameController.text = actualInfo; break;
-  //       case 'age': patientAgeController.text = transcriptParsed[2]; break;
-  //       case 'gender': patientGenderController.text = transcriptParsed[2]; break;
-  //       case 'symptom': symptomsP.text = actualInfo;  break;
-  //       case 'diagnosis': diagnosisP.text = actualInfo; break;
-  //       case 'prescription': prescP.text = actualInfo; break;
-  //       case 'advice': advicesP.text = actualInfo; break;
-  //       default : break;
-  //     }
-
-  //     }
-
-  // });
 
   String totalTranscript = "";
 
@@ -431,76 +451,9 @@ class NewPatientState extends State<NewPatientStateful> with TickerProviderState
 
               webRecorder.openRecorder();
 
-              ValueNotifier(transcription).addListener(() {
 
 
 
-
-
-
-
-
-
-    totalTranscript = totalTranscript + "[DOCTOR]: " + transcription + "\n";
-
-    String actualInfo = "";
-    List<String> transcriptParsed = transcription.split(" ");
-    List<String> modString = transcriptParsed.sublist(2);
-    modString.forEach((element) {
-      actualInfo = actualInfo  + element + " ";
-    });
-
-      if(transcriptParsed[0] == 'put') {
-        print("Given order :  Adding an element");
-
-
-      switch(transcriptParsed[1]) {
-        case 'name': patientNameController.text = actualInfo; break;
-        case 'age': patientAgeController.text = transcriptParsed[2]; break;
-        case 'gender': patientGenderController.text = transcriptParsed[2]; break;
-        case 'symptom': symptomsP.text == "" ? symptomsP.text = actualInfo : symptomsP.text = symptomsP.text + ", " + actualInfo; print(symptomsP.text); break;
-        case 'diagnosis': diagnosisP.text == "" ? diagnosisP.text = actualInfo : diagnosisP.text = diagnosisP.text + ", " + actualInfo; break;
-        case 'prescription': prescP.text == "" ? prescP.text = actualInfo : prescP.text = prescP.text + ", " + actualInfo; break;
-        case 'advice': advicesP.text == "" ? advicesP.text = actualInfo : advicesP.text = advicesP.text + ", " + actualInfo; break;
-        default : break;
-      }
-
-
-      } else if(transcriptParsed[0]  == 'remove') {
-        print("Given order: Removing an element");
-
-
-      switch(transcriptParsed[1]) {
-        case 'name': patientNameController.text = ""; break;
-        case 'age': patientAgeController.text = ""; break;
-        case 'gender': patientGenderController.text = ""; break;
-        case 'symptoms': symptomsP.text = "";  break;
-        case 'diagnosis': diagnosisP.text = ""; break;
-        case 'prescription': prescP.text = ""; break;
-        case 'advice': advicesP.text = ""; break;
-        default : break;
-      }
-
-
-
-      } else if(transcriptParsed[0]  == "modify") {
-        print("Given order: modifying the element");
-
-
-      switch(transcriptParsed[1]) {
-        case 'name': patientNameController.text = actualInfo; break;
-        case 'age': patientAgeController.text = transcriptParsed[2]; break;
-        case 'gender': patientGenderController.text = transcriptParsed[2]; break;
-        case 'symptom': symptomsP.text = actualInfo;  break;
-        case 'diagnosis': diagnosisP.text = actualInfo; break;
-        case 'prescription': prescP.text = actualInfo; break;
-        case 'advice': advicesP.text = actualInfo; break;
-        default : break;
-      }
-
-      }
-
-              });
 
               setState(() {
 

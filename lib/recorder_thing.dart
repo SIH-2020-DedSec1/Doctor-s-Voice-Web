@@ -3,11 +3,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:html' as html;
 import 'dart:js' as js;
-import 'dart:typed_data';
-import 'package:doctors_voice_web/ibm_speech_to_text.dart';
-import 'package:http/http.dart' as http;
 
-import 'package:doctors_voice_web/speech_thingy.dart';
 import 'package:flutter/material.dart';
 
 import 'new_patient.dart';
@@ -18,10 +14,12 @@ class WebRecorder {
 
   final Function whenRecorderStart; 
   final Function whenRecorderStop;
+  final Function whenReceiveData;
   // final Function whenReceiveData;
 
 
-  WebRecorder({@required this.whenRecorderStart, @required this.whenRecorderStop});
+  WebRecorder({@required this.whenRecorderStart, @required this.whenRecorderStop, 
+      @required this.whenReceiveData,});
 
   openRecorder(){
     WebRecorder.isNotRecording = !WebRecorder.isNotRecording;
@@ -66,21 +64,15 @@ class WebRecorder {
     reader.readAsArrayBuffer(blob);
     reader.onLoadEnd.listen((e) async {
 
-      var audioThing = html.Url.createObjectUrlFromBlob(blob);
-      print(audioThing);
 
-      print(blob.type);
+      setData(reader.result);
 
-      IBMSpeechToText ibmSpeechToText = new IBMSpeechToText();
-      String outputString = ibmSpeechToText.doProcess(reader.result);
-
-      var dataObject = jsonDecode(outputString);
-      transcription = dataObject["results"]["alternatives"]["transcript"];
 
     
     });
   }
 
+  setData(data) => whenReceiveData(data);
 
   dispose(){
     WebRecorder.recorder.removeEventListener('dataavailable', hundlerFunctionStream);
