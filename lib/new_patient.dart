@@ -29,6 +29,12 @@ import 'package:js/js.dart';
 
 import 'package:http/http.dart' as http;
 
+import 'package:flutter/services.dart' show rootBundle;
+
+Future<ByteData> loadAsset() async {
+  return await rootBundle.load('assets/dv.png');
+}
+
 
 
 class NewPatient extends StatelessWidget {
@@ -123,16 +129,12 @@ class NewPatientState extends State<NewPatientStateful> with TickerProviderState
         
     });
 
-    http.get(
-      "https://www.clipartkey.com/mpngs/m/130-1303838_first-step-pediatrician-female-doctor-logo-png.png",
+    loadAsset().then((value) {
+      var buffer = value.buffer;
+      imageForPdf = buffer.asUint8List(value.offsetInBytes, value.lengthInBytes);
+    });
 
-      headers: {
-        "Access-Control-Allow-Origin": "*",
-      },
 
-      ).then((value) => {
-          imageForPdf = value.bodyBytes
-      });
 
   }
 
@@ -956,23 +958,23 @@ class NewPatientState extends State<NewPatientStateful> with TickerProviderState
                 crossAxisAlignment: pw.CrossAxisAlignment.center,
                 children: <pw.Widget>[
 
-                  // pw.Padding(
-                  //   padding: pw.EdgeInsets.fromLTRB(8.0, 16.0, 16.0, 16.0),
-                  //   child: pw.Container(
-                  //     width: 64.0,
-                  //     height: 64.0,
-                  //     decoration: pw.BoxDecoration(
-                  //       shape: pw.BoxShape.circle,
-                  //       image: pw.DecorationImage(
-                  //         fit: pw.BoxFit.fill,
-                  //         image: PdfImage.file(
-                  //           pdf.document, 
-                  //           bytes: imageForPdf,
-                  //         ),
-                  //       ),
-                  //     ),
-                  //   ),
-                  // ),
+                  pw.Padding(
+                    padding: pw.EdgeInsets.fromLTRB(8.0, 16.0, 16.0, 16.0),
+                    child: pw.Container(
+                      width: 64.0,
+                      height: 64.0,
+                      decoration: pw.BoxDecoration(
+                        shape: pw.BoxShape.circle,
+                        image: pw.DecorationImage(
+                          fit: pw.BoxFit.fill,
+                          image: PdfImage.file(
+                            pdf.document, 
+                            bytes: imageForPdf,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
 
 
                   pw.Column(
