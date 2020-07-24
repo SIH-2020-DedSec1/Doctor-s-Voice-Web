@@ -36,6 +36,7 @@ Future<ByteData> loadAsset() async {
 }
 
 
+String transcription;
 
 class NewPatient extends StatelessWidget {
   NewPatient({Key key, this.firebaseUser,}) : super(key: key);
@@ -427,48 +428,81 @@ class NewPatientState extends State<NewPatientStateful> with TickerProviderState
              onPressed: () {
               isRecording = !isRecording;
 
-              String transcription;
 
-              
-        
-              // var object = new js.JsObject(js.context['Object']);
-              // object['dictate'] = () => {
-              //   object['']
-              // };
-              
-              // object['greeting'] = 'Hello';
+              webRecorder.openRecorder();
 
-              // object['greet'] = (name) => "${object['greeting']} $name";
-
-              // var message = object.callMethod('greet', ['JavaScript']);
-
-              // js.context['console'].callMethod('log', [message]);
-
-              // print(message);
-
-              // ValueNotifier(transcription).addListener(() {
-              //   if(transcription.isNotEmpty) {
-              //     print(transcription);
-              //   }
-              // });
-
-              // js.context.callMethod('dictate');
-
-              // getTranscript();
-
-              
+              ValueNotifier(transcription).addListener(() {
 
 
-              // print(outputString.toString());
-              // var outputString = js.JsObject(js.context.callMethod('dictate'));
-              // print(outputString.toString());
 
-              // html.window.alert("Speech Recognition sucks.");
+
+
+
+
+
+
+    totalTranscript = totalTranscript + "[DOCTOR]: " + transcription + "\n";
+
+    String actualInfo = "";
+    List<String> transcriptParsed = transcription.split(" ");
+    List<String> modString = transcriptParsed.sublist(2);
+    modString.forEach((element) {
+      actualInfo = actualInfo  + element + " ";
+    });
+
+      if(transcriptParsed[0] == 'put') {
+        print("Given order :  Adding an element");
+
+
+      switch(transcriptParsed[1]) {
+        case 'name': patientNameController.text = actualInfo; break;
+        case 'age': patientAgeController.text = transcriptParsed[2]; break;
+        case 'gender': patientGenderController.text = transcriptParsed[2]; break;
+        case 'symptom': symptomsP.text == "" ? symptomsP.text = actualInfo : symptomsP.text = symptomsP.text + ", " + actualInfo; print(symptomsP.text); break;
+        case 'diagnosis': diagnosisP.text == "" ? diagnosisP.text = actualInfo : diagnosisP.text = diagnosisP.text + ", " + actualInfo; break;
+        case 'prescription': prescP.text == "" ? prescP.text = actualInfo : prescP.text = prescP.text + ", " + actualInfo; break;
+        case 'advice': advicesP.text == "" ? advicesP.text = actualInfo : advicesP.text = advicesP.text + ", " + actualInfo; break;
+        default : break;
+      }
+
+
+      } else if(transcriptParsed[0]  == 'remove') {
+        print("Given order: Removing an element");
+
+
+      switch(transcriptParsed[1]) {
+        case 'name': patientNameController.text = ""; break;
+        case 'age': patientAgeController.text = ""; break;
+        case 'gender': patientGenderController.text = ""; break;
+        case 'symptoms': symptomsP.text = "";  break;
+        case 'diagnosis': diagnosisP.text = ""; break;
+        case 'prescription': prescP.text = ""; break;
+        case 'advice': advicesP.text = ""; break;
+        default : break;
+      }
+
+
+
+      } else if(transcriptParsed[0]  == "modify") {
+        print("Given order: modifying the element");
+
+
+      switch(transcriptParsed[1]) {
+        case 'name': patientNameController.text = actualInfo; break;
+        case 'age': patientAgeController.text = transcriptParsed[2]; break;
+        case 'gender': patientGenderController.text = transcriptParsed[2]; break;
+        case 'symptom': symptomsP.text = actualInfo;  break;
+        case 'diagnosis': diagnosisP.text = actualInfo; break;
+        case 'prescription': prescP.text = actualInfo; break;
+        case 'advice': advicesP.text = actualInfo; break;
+        default : break;
+      }
+
+      }
+
+              });
 
               setState(() {
-
-                // var state = js.JsObject.fromBrowserObject(js.context['recognition']);
-                // state.callMethod(isRecording ? 'start' : 'stop');
 
               });
           

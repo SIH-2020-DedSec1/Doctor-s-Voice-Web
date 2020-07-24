@@ -3,11 +3,14 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:html' as html;
 import 'dart:js' as js;
+import 'dart:typed_data';
 import 'package:doctors_voice_web/ibm_speech_to_text.dart';
 import 'package:http/http.dart' as http;
 
 import 'package:doctors_voice_web/speech_thingy.dart';
 import 'package:flutter/material.dart';
+
+import 'new_patient.dart';
 
 class WebRecorder {
   static bool isNotRecording = true;
@@ -60,7 +63,6 @@ class WebRecorder {
 
     html.FileReader reader = html.FileReader();
     html.Blob blob = js.JsObject.fromBrowserObject(event)['data'];
-    
     reader.readAsArrayBuffer(blob);
     reader.onLoadEnd.listen((e) async {
 
@@ -69,8 +71,11 @@ class WebRecorder {
 
       print(blob.type);
 
-      // IBMSpeechToText ibmSpeechToText = new IBMSpeechToText();
-      // ibmSpeechToText.doProcess(blob);
+      IBMSpeechToText ibmSpeechToText = new IBMSpeechToText();
+      String outputString = ibmSpeechToText.doProcess(reader.result);
+
+      var dataObject = jsonDecode(outputString);
+      transcription = dataObject["results"]["alternatives"]["transcript"];
 
     
     });

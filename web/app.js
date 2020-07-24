@@ -4,7 +4,7 @@ recognition = new SpeechRecognition();
 recognition.interimResults = false;
 
 
-var dictateFunction =  () {
+function dictate() {
     recognition.stop();
     recognition.start();
     recognition.onresult = (event) => {
