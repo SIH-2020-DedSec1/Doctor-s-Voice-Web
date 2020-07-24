@@ -1,12 +1,17 @@
 
+@JS()
+library typed_callback.web;
+
 import 'dart:async';
 import 'dart:html';
 import 'dart:typed_data';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:path_provider/path_provider.dart';
 import 'recorder_thing.dart';
 import 'curvesAnimation.dart';
 import 'dashboard.dart';
 import 'sending_facilities.dart';
+import 'package:firebase/firebase.dart' as fb;
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -17,6 +22,10 @@ import 'package:pdf/widgets.dart' as pw;
 
 import 'dart:html' as html;
 import 'dart:js' as js;
+
+
+
+import 'package:js/js.dart';
 
 import 'package:http/http.dart' as http;
 
@@ -55,7 +64,7 @@ class NewPatientStateful extends StatefulWidget {
 BuildContext buildContextOfNewPatient;
 class NewPatientState extends State<NewPatientStateful> with TickerProviderStateMixin{
 
-
+  final pdf = pw.Document();
 
   WebRecorder webRecorder;
   bool isRecording;
@@ -416,8 +425,49 @@ class NewPatientState extends State<NewPatientStateful> with TickerProviderState
              onPressed: () {
               isRecording = !isRecording;
 
+              String transcription;
+
+              
+        
+              // var object = new js.JsObject(js.context['Object']);
+              // object['dictate'] = () => {
+              //   object['']
+              // };
+              
+              // object['greeting'] = 'Hello';
+
+              // object['greet'] = (name) => "${object['greeting']} $name";
+
+              // var message = object.callMethod('greet', ['JavaScript']);
+
+              // js.context['console'].callMethod('log', [message]);
+
+              // print(message);
+
+              // ValueNotifier(transcription).addListener(() {
+              //   if(transcription.isNotEmpty) {
+              //     print(transcription);
+              //   }
+              // });
+
+              // js.context.callMethod('dictate');
+
+              // getTranscript();
+
+              
+
+
+              // print(outputString.toString());
+              // var outputString = js.JsObject(js.context.callMethod('dictate'));
+              // print(outputString.toString());
+
+              // html.window.alert("Speech Recognition sucks.");
+
               setState(() {
-                js.context.callMethod('dictate');
+
+                // var state = js.JsObject.fromBrowserObject(js.context['recognition']);
+                // state.callMethod(isRecording ? 'start' : 'stop');
+
               });
           
              }, 
@@ -774,17 +824,14 @@ class NewPatientState extends State<NewPatientStateful> with TickerProviderState
                           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.0)),
                           color: Colors.green,
                           onPressed: () async {
-                            // writeOnPdf();
-                            // savePdf();
-                            // Directory documentDirectory = await getApplicationDocumentsDirectory();
 
-                            // String documentPath = documentDirectory.path;
 
-                            // String fullPath = "$documentPath/example.pdf";
+                            writeOnPdf();
+                            savePdf().then((value) {
 
-                            // Navigator.push(context, MaterialPageRoute(
-                            //   builder: (context) => PdfPreviewScreen(path: fullPath,)
-                            // ));
+                                    _launchURL(value);
+                            });
+
                           },
                           child: Padding(
                           padding: EdgeInsets.all(16.0),
@@ -803,13 +850,9 @@ class NewPatientState extends State<NewPatientStateful> with TickerProviderState
                           color: Colors.blue,
                           onPressed: () async {
 
-                            // writeOnPdf();
-                            // savePdf();
-                            // Directory documentDirectory = await getApplicationDocumentsDirectory();
 
-                            // String documentPath = documentDirectory.path;
+  
 
-                            // String fullPath = "$documentPath/example.pdf";
 
                             showDialog(
       context: context,
@@ -835,37 +878,35 @@ class NewPatientState extends State<NewPatientStateful> with TickerProviderState
 
           ],
         ),
-        
       ),
     );
-                            // final StorageReference ref =
-                            //     FirebaseStorage.instance.ref().child('pdf').child('${firebaseUserThing.email}_${uniqueId.text}_$dateTime.pdf');
-                            // StorageUploadTask uploadTask = ref.putFile(
-                            //   File(fullPath),
-                            //   StorageMetadata(
-                            //     contentLanguage: 'en',
-                            //   ),
-                            // );
-
-// await (await uploadTask.onComplete).ref.getDownloadURL().then((value) {
 
 
 
-//                             Firestore.instance.collection('doctors').document(firebaseUserThing.email).collection('patients_operated').document(dateTime).setData({
-//                               'patient_uid': uniqueId.text,
-//                               'pdfLink': value.toString(),
-//                             }).then((xx) {
-//       Navigator.of(context, rootNavigator: true).pop('dialog');
-//       Navigator.of(context).push(MaterialPageRoute(builder: (context) =>  SendingFacilities(title: value.toString())));
-
-//                             });
 
 
 
-//     });
+                            writeOnPdf().then((value) async {
 
+                                var txt = pdf.save();
+                                var blobUrl = html.Blob([txt], 'application/pdf');  
+                                var blobUrlLink = html.Url.createObjectUrlFromBlob(blobUrl);
+                                print(blobUrlLink);
 
-                            
+                                fb.StorageReference storageRef = fb.storage().ref('pdf/${firebaseUserThing.email}_${uniqueId.text}_$dateTime.pdf');
+                                fb.UploadTaskSnapshot uploadTaskSnapshot = await storageRef.put(blobUrl).future;
+    
+                                uploadTaskSnapshot.ref.getDownloadURL().then((value) {
+
+                            Firestore.instance.collection('doctors').document(firebaseUserThing.email).collection('patients_operated').document(dateTime).setData({
+                              'patient_uid': uniqueId.text,
+                              'pdfLink': value.toString(),
+                            }).then((xx) {
+                                Navigator.of(context, rootNavigator: true).pop('dialog');
+                                Navigator.of(context).push(MaterialPageRoute(builder: (context) =>  SendingFacilities(title: value.toString())));    
+                            });
+                        });
+                      });
 
                           },  
                           child: Padding(
@@ -898,284 +939,223 @@ class NewPatientState extends State<NewPatientStateful> with TickerProviderState
   }
 
 
-
-
-  getStorageQuotaBro() {
-
-    html.window.requestFileSystem(1024 * 1024).then((value) {
-      gotLocalStoragePermissionBro(value);
-    });
+  Future<void> writeOnPdf() async {
     
-  }
+    pdf.addPage(
 
-  gotLocalStoragePermissionBro(html.FileSystem value) {
-    value.root.createFile("file.pdf").then((x) {
-      
-      value.root.getFile("file.pdf").then((y) {
-          
-      });
-    });
-  }
+      pw.MultiPage(
+        pageFormat: PdfPageFormat.a4,
+        margin: pw.EdgeInsets.all(32),
 
-  // writeOnPdf() async {
-    
+        build: (pw.Context context){
+          return <pw.Widget>  [
+            pw.Header(
+              level: 0,
+              child: pw.Row(
+                mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: pw.CrossAxisAlignment.center,
+                children: <pw.Widget>[
 
-  
-
-
-  //   pdf.addPage(
-  //     pw.MultiPage(
-  //       pageFormat: PdfPageFormat.a4,
-  //       margin: pw.EdgeInsets.all(32),
-
-  //       build: (pw.Context context){
-  //         return <pw.Widget>  [
-  //           pw.Header(
-  //             level: 0,
-  //             child: pw.Row(
-  //               mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
-  //               crossAxisAlignment: pw.CrossAxisAlignment.center,
-  //               children: <pw.Widget>[
-
-  //                 pw.Padding(
-  //                   padding: pw.EdgeInsets.fromLTRB(8.0, 16.0, 16.0, 16.0),
-  //                   child: pw.Container(
-  //                     width: 64.0,
-  //                     height: 64.0,
-  //                     decoration: pw.BoxDecoration(
-  //                       shape: pw.BoxShape.circle,
-  //                       image: pw.DecorationImage(
-  //                         fit: pw.BoxFit.fill,
-  //                         image: PdfImage.file(
-  //                           pdf.document, 
-  //                           bytes: imageForPdf,
-  //                         ),
-  //                       ),
-  //                     ),
-  //                   ),
-  //                 ),
+                  // pw.Padding(
+                  //   padding: pw.EdgeInsets.fromLTRB(8.0, 16.0, 16.0, 16.0),
+                  //   child: pw.Container(
+                  //     width: 64.0,
+                  //     height: 64.0,
+                  //     decoration: pw.BoxDecoration(
+                  //       shape: pw.BoxShape.circle,
+                  //       image: pw.DecorationImage(
+                  //         fit: pw.BoxFit.fill,
+                  //         image: PdfImage.file(
+                  //           pdf.document, 
+                  //           bytes: imageForPdf,
+                  //         ),
+                  //       ),
+                  //     ),
+                  //   ),
+                  // ),
 
 
-  //                 pw.Column(
-  //                   mainAxisAlignment: pw.MainAxisAlignment.end,
-  //                   crossAxisAlignment: pw.CrossAxisAlignment.end,
-  //                   mainAxisSize: pw.MainAxisSize.min,
-  //                   children: <pw.Widget>[
+                  pw.Column(
+                    mainAxisAlignment: pw.MainAxisAlignment.end,
+                    crossAxisAlignment: pw.CrossAxisAlignment.end,
+                    mainAxisSize: pw.MainAxisSize.min,
+                    children: <pw.Widget>[
 
-  //                       pw.Padding(
-  //                         padding: pw.EdgeInsets.fromLTRB(8.0, 8.0, 0.0, 4.0),
-  //                         child: pw.Text("Doctor's Name: ${firebaseUserThing.displayName}", 
-  //                         textAlign: pw.TextAlign.right,
-  //                         style: pw.TextStyle(
-  //                           fontSize: 16.0,
-  //                           fontWeight: pw.FontWeight.bold,
-  //                         ),
-  //                         ),
-  //                       ),
-
-
-  //                       pw.Padding(
-  //                         padding: pw.EdgeInsets.fromLTRB(8.0, 8.0, 0.0, 4.0),
-  //                         child: pw.Text("Hospital Name: $hospitalName", 
-  //                         textAlign: pw.TextAlign.right,
-  //                         style: pw.TextStyle(
-  //                           fontWeight: pw.FontWeight.normal,
-  //                         ),
-  //                         ),
-  //                       ),
+                        pw.Padding(
+                          padding: pw.EdgeInsets.fromLTRB(8.0, 8.0, 0.0, 4.0),
+                          child: pw.Text("Doctor's Name: ${firebaseUserThing.displayName}", 
+                          textAlign: pw.TextAlign.right,
+                          style: pw.TextStyle(
+                            fontSize: 16.0,
+                            fontWeight: pw.FontWeight.bold,
+                          ),
+                          ),
+                        ),
 
 
-  //                       pw.Padding(
-  //                         padding: pw.EdgeInsets.fromLTRB(8.0, 8.0, 0.0, 8.0),
-  //                         child: pw.Text("Email ID: ${firebaseUserThing.email}", 
-  //                         textAlign: pw.TextAlign.right,
-  //                         style: pw.TextStyle(
-  //                           fontWeight: pw.FontWeight.normal,
-  //                         ),
-  //                         ),
-  //                       ),
+                        pw.Padding(
+                          padding: pw.EdgeInsets.fromLTRB(8.0, 8.0, 0.0, 4.0),
+                          child: pw.Text("Hospital Name: $hospitalName", 
+                          textAlign: pw.TextAlign.right,
+                          style: pw.TextStyle(
+                            fontWeight: pw.FontWeight.normal,
+                          ),
+                          ),
+                        ),
 
-  //                   ]
-  //                 ),
+
+                        pw.Padding(
+                          padding: pw.EdgeInsets.fromLTRB(8.0, 8.0, 0.0, 8.0),
+                          child: pw.Text("Email ID: ${firebaseUserThing.email}", 
+                          textAlign: pw.TextAlign.right,
+                          style: pw.TextStyle(
+                            fontWeight: pw.FontWeight.normal,
+                          ),
+                          ),
+                        ),
+
+                    ]
+                  ),
 
               
-  //               ]
-  //             ),
-  //           ),
+                ]
+              ),
+            ),
             
 
+            pw.Table(
+              children: <pw.TableRow> [
 
-
-
-  //           pw.Table(
-              
-  //             children: <pw.TableRow> [
-
-  //                 pw.TableRow(
+                  pw.TableRow(
                     
-  //                   children: <pw.Widget>[
-                      
-  //                     //Name
+                    children: <pw.Widget>[
+                      pw.Padding(
+                        padding: pw.EdgeInsets.all(8.0),
+                        child: pw.Text("Name : ${patientNameController.text}"
+                      ),
+                      ),
 
-  //                     pw.Padding(
-  //                       padding: pw.EdgeInsets.all(8.0),
-  //                       child: pw.Text("Name : ${patientNameController.text}"
-  //                     ),
-  //                     ),
-
-
-
-
-  //                     pw.Padding(
-  //                       padding: pw.EdgeInsets.all(8.0),
-  //                       child: pw.Text("Date & Time : $dateTime"
-  //                     ),
-  //                     ),
-
-
-  //                     ///Date time
+                      pw.Padding(
+                        padding: pw.EdgeInsets.all(8.0),
+                        child: pw.Text("Date & Time : $dateTime"
+                      ),
+                      ),
                       
 
-  //                   ]
-  //                 ),
+                    ]
+                  ),
 
 
 
 
-  //                 pw.TableRow(
-  //                   children: <pw.Widget>[
-                      
-  //                     //Age
-  //                     pw.Padding(
-  //                       padding: pw.EdgeInsets.all(8.0),
-  //                       child: pw.Text("Age / Gender : ${patientAgeController.text} / ${patientGenderController.text}"
-  //                     ),
-  //                     ),
+                  pw.TableRow(
+                    children: <pw.Widget>[
+                      pw.Padding(
+                        padding: pw.EdgeInsets.all(8.0),
+                        child: pw.Text("Age / Gender : ${patientAgeController.text} / ${patientGenderController.text}"
+                      ),
+                      ),
+
+
+                      pw.Padding(
+                        padding: pw.EdgeInsets.all(8.0),
+                        child: pw.Text("Unique ID : ${uniqueId.text}"
+                      ),
+                      ),                    
+
+                    ]
+                  ),
 
 
 
+              ]
+            ),
 
 
-
-  //                     pw.Padding(
-  //                       padding: pw.EdgeInsets.all(8.0),
-  //                       child: pw.Text("Unique ID : ${uniqueId.text}"
-  //                     ),
-  //                     ),
-
-
-  //                     ///Gender
-  //                     ///
-  //                     ///
-  //                     ///
-  //                     ///Unique ID
-                      
-
-  //                   ]
-  //                 ),
+            pw.Header(
+              level: 1,
+              child: pw.Padding(
+                padding: pw.EdgeInsets.all(8.0),
+                child:  pw.Text("Symptoms", style: pw.TextStyle(fontSize: 16.0, fontWeight: pw.FontWeight.bold,)),
+              ),
+            ),
 
 
-
-  //             ]
-  //           ),
-
-
-  //           pw.Header(
-  //             level: 1,
-  //             child: pw.Padding(
-  //               padding: pw.EdgeInsets.all(8.0),
-  //               child:  pw.Text("Symptoms", style: pw.TextStyle(fontSize: 16.0, fontWeight: pw.FontWeight.bold,)),
-  //             ),
-  //           ),
-
-
-  //           pw.Padding(
-  //             padding: pw.EdgeInsets.all(8.0),
-  //             child: pw.Text("${symptomsP.text}"),
-  //           ),
+            pw.Padding(
+              padding: pw.EdgeInsets.all(8.0),
+              child: pw.Text("${symptomsP.text}"),
+            ),
 
 
 
 
 
-  //           pw.Header(
-  //             level: 1,
-  //             child: pw.Padding(
-  //               padding: pw.EdgeInsets.all(8.0),
-  //               child:  pw.Text("Diagnosis", style: pw.TextStyle(fontSize: 16.0, fontWeight: pw.FontWeight.bold,)),
-  //             ),
-  //           ),
+            pw.Header(
+              level: 1,
+              child: pw.Padding(
+                padding: pw.EdgeInsets.all(8.0),
+                child:  pw.Text("Diagnosis", style: pw.TextStyle(fontSize: 16.0, fontWeight: pw.FontWeight.bold,)),
+              ),
+            ),
 
 
 
-  //           pw.Padding(
-  //             padding: pw.EdgeInsets.all(8.0),
-  //             child: pw.Text("${diagnosisP.text}"),
-  //           ),
+            pw.Padding(
+              padding: pw.EdgeInsets.all(8.0),
+              child: pw.Text("${diagnosisP.text}"),
+            ),
 
 
 
-  //           pw.Header(
-  //             level: 1,
-  //             child: pw.Padding(
-  //               padding: pw.EdgeInsets.all(8.0),
-  //               child:  pw.Text("Prescription", style: pw.TextStyle(fontSize: 16.0, fontWeight: pw.FontWeight.bold,)),
-  //             ),
-  //           ),
+            pw.Header(
+              level: 1,
+              child: pw.Padding(
+                padding: pw.EdgeInsets.all(8.0),
+                child:  pw.Text("Prescription", style: pw.TextStyle(fontSize: 16.0, fontWeight: pw.FontWeight.bold,)),
+              ),
+            ),
 
 
-  //           pw.Padding(
-  //             padding: pw.EdgeInsets.all(8.0),
-  //             child: pw.Text("${prescP.text}"),
-  //           ),
-
-
-
-  //           pw.Header(
-  //             level: 1,
-  //             child: pw.Padding(
-  //               padding: pw.EdgeInsets.all(8.0),
-  //               child:  pw.Text("Advices", style: pw.TextStyle(fontSize: 16.0, fontWeight: pw.FontWeight.bold,)),
-  //             ),
-  //           ),
+            pw.Padding(
+              padding: pw.EdgeInsets.all(8.0),
+              child: pw.Text("${prescP.text}"),
+            ),
 
 
 
-  //           pw.Padding(
-  //             padding: pw.EdgeInsets.all(8.0),
-  //             child: pw.Text("${advicesP.text}"),
-  //           ),
+            pw.Header(
+              level: 1,
+              child: pw.Padding(
+                padding: pw.EdgeInsets.all(8.0),
+                child:  pw.Text("Advices", style: pw.TextStyle(fontSize: 16.0, fontWeight: pw.FontWeight.bold,)),
+              ),
+            ),
 
 
 
+            pw.Padding(
+              padding: pw.EdgeInsets.all(8.0),
+              child: pw.Text("${advicesP.text}"),
+            ),
+          ];
+        },
+      )
+    );
+  
+  
+  }
 
-
-
-  //         ];
-  //       },
-
-
-  //     )
-  //   );
-  // }
-
-  // Future savePdf() async{
-
-
-
-  // //   Directory documentDirectory = await getApplicationDocumentsDirectory();
-
-  // //   String documentPath = documentDirectory.path;
-
-  // //   File file = File("$documentPath/example.pdf");
-
-  // //   file.writeAsBytesSync(pdf.save());
-  // }
-
-
-
-
-
-
-
+  Future<String> savePdf() async{
+    var txt = pdf.save();
+    var blobUrl = html.Blob([txt], 'application/pdf');  
+    var blobUrlLink = html.Url.createObjectUrlFromBlob(blobUrl);
+    print(blobUrlLink);
+    return blobUrlLink;
+  }
 }
+
+
+  void _launchURL(String url) async {
+    js.context.callMethod("open", [url]);
+  }
+
