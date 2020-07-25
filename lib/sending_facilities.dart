@@ -23,7 +23,7 @@ final String title;
       title: "Doctor's Voice",
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primarySwatch: Colors.green,
+        primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       home: SendingFacilitiesStateful(title: title ),
@@ -66,6 +66,7 @@ class SendingFacilitiesState extends State<SendingFacilitiesStateful> with Ticke
 
     return Scaffold(
       key: _scaffoldKey,
+      backgroundColor: Colors.blue.shade700,
       body: SingleChildScrollView(
         child: Stack(
           children: [
@@ -78,7 +79,7 @@ class SendingFacilitiesState extends State<SendingFacilitiesStateful> with Ticke
               Align(
                 alignment: Alignment.topRight,
                 child: 
-              Icon(Icons.send, color: Colors.green, size: 250.00,),
+              Icon(Icons.send, color: Colors.white, size: 250.00,),
               ),
               ),
 
@@ -98,7 +99,7 @@ class SendingFacilitiesState extends State<SendingFacilitiesStateful> with Ticke
             padding: EdgeInsets.fromLTRB(8.0, 30.0, 0.0, 4.0),
             child: Row(
             children: [
-              IconButton(icon: Icon(Icons.chevron_left, color: Colors.black,), onPressed: () {
+              IconButton(icon: Icon(Icons.chevron_left, color: Colors.white,), onPressed: () {
                 Navigator.of(buildContextOfNewPatient).pop();
         },),
             ],
@@ -108,6 +109,16 @@ class SendingFacilitiesState extends State<SendingFacilitiesStateful> with Ticke
 
 
 
+
+
+            Center(
+              child: Container(
+                width: MediaQuery.of(context).size.width / 2.5,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+
           Padding(
             padding: EdgeInsets.fromLTRB(20.0, 16.0, 16.0, 16.0),
             child: Text("Send the document",
@@ -116,11 +127,10 @@ class SendingFacilitiesState extends State<SendingFacilitiesStateful> with Ticke
               
               fontSize: 24.0,
               fontWeight: FontWeight.w700,
-              color: Colors.black
+              color: Colors.white
               ),
             ),
           ),
-
 
 
 
@@ -403,6 +413,12 @@ class SendingFacilitiesState extends State<SendingFacilitiesStateful> with Ticke
             ),
             ),
 
+
+                  ],
+                ),
+
+              ),
+            ),
 
 
 
