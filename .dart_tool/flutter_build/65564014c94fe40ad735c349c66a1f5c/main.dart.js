@@ -34075,7 +34075,7 @@ t=l.x
 s=l.r
 r=M.aX(k,k,k,k,k,k,k,k,k,k,k)
 q=new P.a_(16,16)
-p=K.ahx(new L.nU("asset/dv.png"),40)
+p=K.ahx(new L.nU("assets/dv.png"),40)
 o=l.d
 n=l.a
 o=o==="there"?n.c.b.e:n.c.b.c
@@ -34131,7 +34131,7 @@ n=M.aX(c,L.ag("Profile",c,c,c,c,A.ac(c,c,C.h,c,c,c,c,c,b,c,c,24,c,C.r,c,c,!0,c,c
 m=F.a7(a3,!1).a.a>600?F.a7(a3,!1).a.a/2.5:F.a7(a3,!1).a.a
 l=new P.a_(16,16)
 k=F.a7(a3,!1).a
-j=K.ahx(new L.nU("asset/dv.png"),50)
+j=K.ahx(new L.nU("assets/dv.png"),50)
 i=d.d
 h=d.a
 i=i==="there"?h.c.b.e:h.c.b.c

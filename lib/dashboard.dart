@@ -837,10 +837,6 @@ class DashboardState extends State<DashboardStateful> with TickerProviderStateMi
         
 
 
-            Padding(
-              padding: EdgeInsets.all(16.0),
-              child: Container(),
-            ),
 
 
           Padding(
@@ -861,6 +857,11 @@ class DashboardState extends State<DashboardStateful> with TickerProviderStateMi
             ),
           ),
 
+
+            Padding(
+              padding: EdgeInsets.all(16.0),
+              child: Container(),
+            ),
 
 
               StreamBuilder<QuerySnapshot>(
