@@ -203,9 +203,7 @@ class DashboardState extends State<DashboardStateful> with TickerProviderStateMi
                     padding: EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 8.0),
                     child: CircleAvatar(
                     radius: 40.0,
-              backgroundImage: NetworkImage(
-                "https://www.thefactsite.com/wp-content/uploads/2018/12/emma-watson-facts.jpg",
-                ),
+              backgroundImage: AssetImage("asset/dv.png"),
             ),
                   ),
 
@@ -575,18 +573,6 @@ class DashboardState extends State<DashboardStateful> with TickerProviderStateMi
     );
   }
 
-
-
-
-
-
-
-
-
-
-
-
-
   Widget profileMenu(BuildContext context) {
     return AnimatedPositioned(
       duration: Duration(milliseconds: 500,),
@@ -686,9 +672,7 @@ class DashboardState extends State<DashboardStateful> with TickerProviderStateMi
                    padding: EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 8.0),
                    child: CircleAvatar(
                     radius: 50.0,
-              backgroundImage: NetworkImage(
-                "https://www.thefactsite.com/wp-content/uploads/2018/12/emma-watson-facts.jpg",
-                ),
+              backgroundImage: AssetImage("asset/dv.png"),
             ),
                  ),
 
@@ -800,9 +784,6 @@ class DashboardState extends State<DashboardStateful> with TickerProviderStateMi
     ),
     );
   }
-
-
-
 
   Widget historyData(BuildContext context) {
     return AnimatedPositioned(
@@ -929,8 +910,6 @@ class DashboardState extends State<DashboardStateful> with TickerProviderStateMi
     ),
     );
   }
-
-
 
   Widget aboutUs(BuildContext context) {
     return AnimatedPositioned(
