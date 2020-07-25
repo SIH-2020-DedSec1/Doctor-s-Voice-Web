@@ -19,7 +19,7 @@ class UploadingDocuments extends StatelessWidget {
       title: "Doctor's Voice",
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primarySwatch: Colors.green,
+        primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       home: UploadingDocumentsStateful(firebaseUser: firebaseUser,),
@@ -121,7 +121,7 @@ class UploadingDocumentsState extends State<UploadingDocumentsStateful> with Tic
                     child: RaisedButton(
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.0)),
                       elevation: 8.0,
-      color: Colors.cyan.shade900,
+      color: Colors.blue.shade700,
                       onPressed: () {
 
                           Navigator.of(context).push(MaterialPageRoute(builder: (context) => new Dashboard(firebaseUser: widget.firebaseUser,)));

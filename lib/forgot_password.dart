@@ -17,7 +17,7 @@ class ForgotPassword extends StatelessWidget {
       title: "Doctor's Voice",
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primarySwatch: Colors.green,
+        primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       home: ForgotPasswordStateful(title: "Register"),
@@ -164,7 +164,7 @@ Padding(
                     child: RaisedButton(
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.0)),
                       elevation: 8.0,
-                      color: Colors.amber.shade900,
+                      color: Colors.blue.shade700,
                           onPressed: () {
 
                           FirebaseAuth.instance.sendPasswordResetEmail(email: emailID.text).then((value) {
@@ -191,7 +191,7 @@ Padding(
             Padding(
               padding: EdgeInsets.all(16.0),
               child: Card(
-                color: Colors.pink,
+                color: Colors.blue.shade700,
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.0)),
                 elevation: 4.0,
               shadowColor: Colors.indigo,

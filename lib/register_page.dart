@@ -19,7 +19,7 @@ class RegisterUser extends StatelessWidget {
       title: "Doctor's Voice",
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primarySwatch: Colors.green,
+        primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       home: RegisterUserStateful(title: "Register"),
@@ -345,7 +345,7 @@ Padding(
             Padding(
               padding: EdgeInsets.all(16.0),
               child: Card(
-                color: Colors.pink,
+                color: Colors.blue.shade700,
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.0)),
                 elevation: 4.0,
               shadowColor: Colors.indigo,

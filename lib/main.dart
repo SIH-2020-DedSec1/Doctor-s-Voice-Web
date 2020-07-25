@@ -187,7 +187,9 @@ class LoginOrDashboardState extends State<LoginOrDashboardStateful> with TickerP
                       },
                       child: Padding(
                         padding: EdgeInsets.all(16.0),
-                        child: Text("Login", style: TextStyle(color: Colors.white),),
+                        child: Text("Login", style: TextStyle(fontFamily: 'Manrope',
+              color: Colors.white
+              )),
                       ),
                     ),
                   ),

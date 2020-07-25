@@ -50,7 +50,7 @@ class NewPatient extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       
       theme: ThemeData(
-        primarySwatch: Colors.green,
+        primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       home: NewPatientStateful(),
@@ -236,103 +236,103 @@ setState(() {
       
         padding: EdgeInsets.fromLTRB(8.0, 0.0, 8.0, 0.0),
       child: Card(
-        color: Colors.amber,
+        color: Colors.green.shade900,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: isClicked ? [
 
             Padding(
               padding: EdgeInsets.all(16.0),
-              child: Text("'put name Nani'", style: TextStyle( fontFamily: 'Manrope', fontSize: 20.0, fontWeight: FontWeight.w700)),
+              child: Text("'put name Nani'", style: TextStyle( fontFamily: 'Manrope', fontSize: 20.0, fontWeight: FontWeight.w700, color: Colors.white)),
             ),
 
 
             Padding(
               padding: EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 16.0),
-              child: Text("The above statement adds the name 'Nani' into the field 'Patient name'", style: TextStyle( fontSize: 16.0,)),
+              child: Text("The above statement adds the name 'Nani' into the field 'Patient name'", style: TextStyle( fontSize: 16.0,color: Colors.white)),
             ),
 
 //,  and 
             Padding(
               padding: EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 16.0),
-              child: Text("We can also perform",  style: TextStyle( fontFamily: 'Manrope', fontSize: 20.0, fontWeight: FontWeight.w700)),
+              child: Text("We can also perform",  style: TextStyle( fontFamily: 'Manrope', fontSize: 20.0, fontWeight: FontWeight.w700,color: Colors.white)),
             ),
 
 
             Padding(
               padding: EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 16.0),
-              child: Text("'put': adds the given value to the respective field", style: TextStyle( fontSize: 16.0,)),
+              child: Text("'put': adds the given value to the respective field", style: TextStyle( fontSize: 16.0,color: Colors.white)),
             ),
 
 
             Padding(
               padding: EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 16.0),
-              child: Text("'remove': Removes everything from a field", style: TextStyle( fontSize: 16.0,)),
+              child: Text("'remove': Removes everything from a field", style: TextStyle( fontSize: 16.0,color: Colors.white)),
             ),
 
 
             Padding(
               padding: EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 16.0),
-              child: Text("'modify': Erases the whole field and adds the given element", style: TextStyle( fontSize: 16.0,)),
+              child: Text("'modify': Erases the whole field and adds the given element", style: TextStyle( fontSize: 16.0,color: Colors.white)),
             ),
 
 
             Padding(
               padding: EdgeInsets.all(16.0),
-              child: Text("Fields supported", style: TextStyle(fontFamily: 'Manrope', fontSize: 20.0, fontWeight: FontWeight.w700)),
+              child: Text("Fields supported", style: TextStyle(fontFamily: 'Manrope', fontSize: 20.0, fontWeight: FontWeight.w700,color: Colors.white)),
             ),
 
 
             Padding(
               padding: EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 16.0),
-              child: Text("'name': Patient Name", style: TextStyle( fontSize: 16.0,)),
+              child: Text("'name': Patient Name", style: TextStyle( fontSize: 16.0,color: Colors.white)),
             ),
 
 
             Padding(
               padding: EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 16.0),
-              child: Text("'age': Patient age (only number required)", style: TextStyle( fontSize: 16.0,)),
+              child: Text("'age': Patient age (only number required)", style: TextStyle( fontSize: 16.0,color: Colors.white)),
             ),
 
             Padding(
               padding: EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 16.0),
-              child: Text("'gender': Patient gender(male / female)", style: TextStyle( fontSize: 16.0,)),
-            ),
-
-
-            Padding(
-              padding: EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 16.0),
-              child: Text("'symptom': Symptoms", style: TextStyle( fontSize: 16.0,)),
+              child: Text("'gender': Patient gender(male / female)", style: TextStyle( fontSize: 16.0,color: Colors.white)),
             ),
 
 
             Padding(
               padding: EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 16.0),
-              child: Text("'diagnosis': Diagnosis", style: TextStyle( fontSize: 16.0,)),
+              child: Text("'symptom': Symptoms", style: TextStyle( fontSize: 16.0,color: Colors.white)),
             ),
 
 
             Padding(
               padding: EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 16.0),
-              child: Text("'prescription': Prescription", style: TextStyle( fontSize: 16.0,)),
+              child: Text("'diagnosis': Diagnosis", style: TextStyle( fontSize: 16.0,color: Colors.white)),
             ),
 
 
             Padding(
               padding: EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 16.0),
-              child: Text("'advice': Advices", style: TextStyle( fontSize: 16.0,)),
+              child: Text("'prescription': Prescription", style: TextStyle( fontSize: 16.0,color: Colors.white)),
             ),
 
 
             Padding(
               padding: EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 16.0),
-              child: Text("(fields requiring multiple values should be added one by one)", style: TextStyle( fontFamily: 'Manrope', fontSize: 20.0, fontWeight: FontWeight.w700)),
+              child: Text("'advice': Advices", style: TextStyle( fontSize: 16.0,color: Colors.white)),
             ),
 
 
             Padding(
               padding: EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 16.0),
-              child: Text("Mobile number can't be typed through voice (as a security measure). Please input mobile number using keyboard.", style: TextStyle( fontFamily: 'Manrope', fontSize: 20.0, fontWeight: FontWeight.w700)),
+              child: Text("(fields requiring multiple values should be added one by one)", style: TextStyle( fontFamily: 'Manrope', fontSize: 20.0, fontWeight: FontWeight.w700,color: Colors.white)),
+            ),
+
+
+            Padding(
+              padding: EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 16.0),
+              child: Text("Mobile number can't be typed through voice (as a security measure). Please input mobile number using keyboard.", style: TextStyle( fontFamily: 'Manrope', fontSize: 20.0, fontWeight: FontWeight.w700,color: Colors.white)),
             ),
 
 
@@ -444,7 +444,7 @@ setState(() {
                 child: FloatingActionButton.extended(
              isExtended: true,
              elevation: 16.0,
-             backgroundColor: isRecording ? Colors.red : Colors.green,
+             backgroundColor: isRecording ? Colors.red.shade700 : Colors.green.shade700,
              onPressed: () {
               isRecording = !isRecording;
 
@@ -573,8 +573,6 @@ setState(() {
 
                         Text(totalTranscript, style: TextStyle(fontSize: 16.0, color: Colors.white,fontFamily: 'Manrope', fontWeight: FontWeight.w300),),
 
-                        
-
                       ],
                     ),
                   ),
@@ -619,9 +617,6 @@ setState(() {
                       children: [
 
 
-
-
-
                         Padding(
                           padding: EdgeInsets.all(8.0),
                           child: TextField(
@@ -652,10 +647,6 @@ setState(() {
                         ),
 
 
-
-
-
-
                         Padding(
                           padding: EdgeInsets.all(8.0),
                           child: TextField(
@@ -672,10 +663,6 @@ setState(() {
                       ),
                     ),
                         ),
-
-
-
-
 
 
                           Padding(
@@ -811,7 +798,7 @@ setState(() {
                         child: RaisedButton(
                           elevation: 4.0,
                           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.0)),
-                          color: Colors.green,
+                          color: Colors.green.shade700,
                           onPressed: () async {
 
 
@@ -836,11 +823,8 @@ setState(() {
                         child: RaisedButton(
                           elevation: 4.0,
                           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.0)),
-                          color: Colors.blue,
+                          color: Colors.blue.shade700,
                           onPressed: () async {
-
-
-  
 
 
                             showDialog(
