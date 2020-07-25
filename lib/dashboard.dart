@@ -7,6 +7,7 @@ import 'curvesAnimation.dart';
 import 'new_patient.dart';
 import 'dart:js' as js;
 
+import 'package:intl/intl.dart';
 void main() {
   runApp(Dashboard());
 }
@@ -54,7 +55,11 @@ class DashboardState extends State<DashboardStateful> with TickerProviderStateMi
 
   int isSelectedNumber = 0;
 
+  List<double> arrayOfPatientsArrival = new List<double>();
+  final List<DataPoint<double>> list = new List<DataPoint<double>>();
+
   String hospitalName;
+  bool isDataLoaded = false;
 
   void _launchURL(String url) async {
     js.context.callMethod("open", [url]);
@@ -63,18 +68,70 @@ class DashboardState extends State<DashboardStateful> with TickerProviderStateMi
   void initState() {
     super.initState();
 
+
+    arrayOfPatientsArrival = [0,0,0,0,0,0,0];
+
+    var sevenDay = DateFormat('yyyy-MM-dd').format(DateTime.now());
+    print(DateTime.now().subtract(Duration(days: 1)));
+    print(DateTime.now().subtract(Duration(days: 2)));
+    print(DateTime.now().subtract(Duration(days: 3)));
+    var sixDay = DateFormat('yyyy-MM-dd').format(DateTime.now().subtract(Duration(days: 1)));
+    var fiveDay = DateFormat('yyyy-MM-dd').format(DateTime.now().subtract(Duration(days: 2)));
+    var fourDay = DateFormat('yyyy-MM-dd').format(DateTime.now().subtract(Duration(days: 3)));
+    var threeDay = DateFormat('yyyy-MM-dd').format(DateTime.now().subtract(Duration(days: 4)));
+    var twoDay = DateFormat('yyyy-MM-dd').format(DateTime.now().subtract(Duration(days: 5)));
+    var oneDay = DateFormat('yyyy-MM-dd').format(DateTime.now().subtract(Duration(days: 6)));
+
     userName = widget.firebaseUser.displayName == null ? "there" : widget.firebaseUser.displayName;
 
     FirebaseAuth.instance.currentUser().then((value) {
 
+        var refFirst = Firestore.instance.collection('doctors').document(value.email);
 
-        Firestore.instance.collection('doctors').document(value.email).collection('personal_info').document('data').get().then((value) {
+        refFirst.collection('personal_info').document('data').get().then((value) {
           hospitalName = value['hospitalName'];
         });
 
-      setState(() {
-        
-      });
+
+
+        refFirst.collection('patients_operated').getDocuments().then((value) {
+            value.documents.forEach((element) {
+              if(element.documentID.contains(oneDay)) {
+                arrayOfPatientsArrival[0] = arrayOfPatientsArrival[0] + 1.0;
+              } else if(element.documentID.contains(twoDay)) {
+                arrayOfPatientsArrival[1] = arrayOfPatientsArrival[1] + 1.0;
+                
+              } else if(element.documentID.contains(threeDay)) {
+                arrayOfPatientsArrival[2] = arrayOfPatientsArrival[2] + 1.0;
+                
+              } else if(element.documentID.contains(fourDay)) {
+                arrayOfPatientsArrival[3] = arrayOfPatientsArrival[3] + 1.0;
+                
+              } else if(element.documentID.contains(fiveDay)) {
+                arrayOfPatientsArrival[4] = arrayOfPatientsArrival[4] + 1.0;
+                
+              } else if(element.documentID.contains(sixDay)) {
+                arrayOfPatientsArrival[5] = arrayOfPatientsArrival[5] + 1.0;
+                
+              } else if(element.documentID.contains(sevenDay)) {
+                arrayOfPatientsArrival[6] = arrayOfPatientsArrival[6] + 1.0;
+                
+              } 
+            });
+        }).then((value) {
+          isDataLoaded = !isDataLoaded;
+          print("Array" + arrayOfPatientsArrival[5].toString());
+          list.add(DataPoint<double>(value: arrayOfPatientsArrival[0], xAxis: 1));
+          list.add(DataPoint<double>(value: arrayOfPatientsArrival[1], xAxis: 2));
+          list.add(DataPoint<double>(value: arrayOfPatientsArrival[2], xAxis: 3));
+          list.add(DataPoint<double>(value: arrayOfPatientsArrival[3], xAxis: 4));
+          list.add(DataPoint<double>(value: arrayOfPatientsArrival[4], xAxis: 5));
+          list.add(DataPoint<double>(value: arrayOfPatientsArrival[5], xAxis: 6));
+          list.add(DataPoint<double>(value: arrayOfPatientsArrival[6], xAxis: 7));
+          setState(( ) {
+
+          });
+        });
     });
 
 
@@ -514,18 +571,10 @@ class DashboardState extends State<DashboardStateful> with TickerProviderStateMi
         xAxisCustomValues: const [1, 2, 3, 4, 5, 6, 7],
         
         
-        series: const [
+        series: [
           BezierLine(
             lineColor: Colors.blue,
-            data: const [
-              DataPoint<double>(value: 10, xAxis: 1),
-              DataPoint<double>(value: 130, xAxis: 2),
-              DataPoint<double>(value: 50, xAxis: 3),
-              DataPoint<double>(value: 150, xAxis: 4),
-              DataPoint<double>(value: 75, xAxis: 5),
-              DataPoint<double>(value: 0, xAxis: 6),
-              DataPoint<double>(value: 5, xAxis: 7),
-            ],
+            data: list,
           ),
         ],
         config: BezierChartConfig(
