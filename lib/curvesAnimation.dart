@@ -4,7 +4,7 @@ class LoginPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
   final paint = Paint()
-    ..color = Colors.green
+    ..color = Colors.blue.shade700
     ..style = PaintingStyle.fill;
 
   final path = new Path()
@@ -54,7 +54,7 @@ class RegisterPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
   final paint = Paint()
-    ..color = Colors.green.shade700
+    ..color = Colors.blue.shade700
     ..style = PaintingStyle.fill;
 
   final path = new Path()
@@ -103,7 +103,7 @@ class ForgotPasswordPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
   final paint = Paint()
-    ..color = Colors.green.shade700
+    ..color = Colors.blue.shade700
     ..style = PaintingStyle.fill;
 
   final path = new Path()
@@ -143,7 +143,7 @@ class DashboardPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
   final paint = Paint()
-    ..color = Colors.green.shade700
+    ..color = Colors.blue.shade700
     ..style = PaintingStyle.fill;
 
   final path = new Path()
@@ -183,7 +183,7 @@ class NewPatientPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
   final paint = Paint()
-    ..color = Colors.green.shade700
+    ..color = Colors.blue.shade700
     ..style = PaintingStyle.fill;
 
 
@@ -217,7 +217,36 @@ class ProfilePainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     var paint = Paint();
-    paint.color = Colors.green[800];
+    paint.color = Colors.blue.shade700;
+    paint.style = PaintingStyle.fill;
+
+    var path = Path();
+
+    path.moveTo(0, size.height * 0.9167);
+    path.quadraticBezierTo(size.width * 0.25, size.height * 0.875,
+        size.width * 0.5, size.height * 0.9167);
+    path.quadraticBezierTo(size.width * 0.75, size.height * 0.9584,
+        size.width * 1.0, size.height * 0.9167);
+    path.lineTo(size.width, size.height);
+    path.lineTo(0, size.height);
+
+    canvas.drawPath(path, paint);
+  }
+
+  @override
+  bool shouldRepaint(CustomPainter oldDelegate) {
+    return true;
+  }
+}
+
+
+
+
+class AboutUsPainter extends CustomPainter {
+  @override
+  void paint(Canvas canvas, Size size) {
+    var paint = Paint();
+    paint.color = Colors.white;
     paint.style = PaintingStyle.fill;
 
     var path = Path();

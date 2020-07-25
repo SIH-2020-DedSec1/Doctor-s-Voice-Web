@@ -23,7 +23,7 @@ class Dashboard extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       
       theme: ThemeData(
-        primarySwatch: Colors.green,
+        primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       home: DashboardStateful(firebaseUser: firebaseUser,),
@@ -108,7 +108,7 @@ class DashboardState extends State<DashboardStateful> with TickerProviderStateMi
 
         heroTag: "NewPatientAdder",
         child: Icon(Icons.add, color: Colors.white,),
-        backgroundColor: Colors.green.shade700,
+        backgroundColor: Colors.blue.shade700,
     
             onPressed: () {
               Navigator.of(context).push(MaterialPageRoute(builder: (context) => new NewPatient(firebaseUser: widget.firebaseUser,)));
@@ -165,7 +165,7 @@ class DashboardState extends State<DashboardStateful> with TickerProviderStateMi
     return Material(
       child: Container(
         padding: EdgeInsets.all(24.0),
-        color: Colors.green.withOpacity(0.80),
+        color: Colors.blue.shade700.withOpacity(0.80),
         width: screenWidth,
         height: screenHeight,
         child: Column(
@@ -600,7 +600,7 @@ class DashboardState extends State<DashboardStateful> with TickerProviderStateMi
         elevation: 16.0,
         
           borderRadius: isCollapsed ? BorderRadius.circular(0.0) : BorderRadius.circular(16.0),
-          color: Colors.white,
+          color: Colors.blue.shade700,
       child: SingleChildScrollView(
         child: Stack(
           children: [
@@ -613,7 +613,7 @@ class DashboardState extends State<DashboardStateful> with TickerProviderStateMi
               Align(
                 alignment: Alignment.bottomLeft,
                 child: 
-              Icon(Icons.person_outline, color: Colors.green, size: 250.00,),
+              Icon(Icons.person_outline, color: Colors.white, size: 250.00,),
               ),
               ),
 
@@ -633,7 +633,7 @@ class DashboardState extends State<DashboardStateful> with TickerProviderStateMi
             padding: EdgeInsets.fromLTRB(8.0, 30.0, 0.0, 4.0),
             child: Row(
             children: [
-              IconButton(icon: Icon(Icons.menu, color: Colors.black,), onPressed: () {
+              IconButton(icon: Icon(Icons.menu, color: Colors.white,), onPressed: () {
           isCollapsed = !isCollapsed;
           setState(() {
             
@@ -657,7 +657,7 @@ class DashboardState extends State<DashboardStateful> with TickerProviderStateMi
               
               fontSize: 24.0,
               fontWeight: FontWeight.w700,
-              color: Colors.black
+              color: Colors.white
               ),
             ),
           ),
@@ -817,8 +817,7 @@ class DashboardState extends State<DashboardStateful> with TickerProviderStateMi
         elevation: 16.0,
         
           borderRadius: isCollapsed ? BorderRadius.circular(0.0) : BorderRadius.circular(16.0),
-          color: Colors.white,
-
+          color: Colors.blue.shade700,
       child: SingleChildScrollView(
         child: Stack(
           children: [
@@ -827,7 +826,7 @@ class DashboardState extends State<DashboardStateful> with TickerProviderStateMi
               Align(
                 alignment: Alignment.topRight,
                 child: 
-              Icon(Icons.history, color: Colors.green, size: 300.00,),
+              Icon(Icons.history, color: Colors.white, size: 300.00,),
               ),
 
 
@@ -845,7 +844,7 @@ class DashboardState extends State<DashboardStateful> with TickerProviderStateMi
             padding: EdgeInsets.fromLTRB(8.0, 30.0, 0.0, 4.0),
             child: Row(
             children: [
-              IconButton(icon: Icon(Icons.menu, color: Colors.black,), onPressed: () {
+              IconButton(icon: Icon(Icons.menu, color: Colors.white,), onPressed: () {
           isCollapsed = !isCollapsed;
           setState(() {
             
@@ -855,6 +854,12 @@ class DashboardState extends State<DashboardStateful> with TickerProviderStateMi
           ),
           ),
         
+
+
+            Padding(
+              padding: EdgeInsets.all(16.0),
+              child: Container(),
+            ),
 
 
           Padding(
@@ -868,7 +873,7 @@ class DashboardState extends State<DashboardStateful> with TickerProviderStateMi
               
               fontSize: 24.0,
               fontWeight: FontWeight.w700,
-              color: Colors.black
+              color: Colors.white
               ),
             ),
               ),
@@ -940,7 +945,7 @@ class DashboardState extends State<DashboardStateful> with TickerProviderStateMi
         elevation: 16.0,
         
           borderRadius: isCollapsed ? BorderRadius.circular(0.0) : BorderRadius.circular(16.0),
-          color: Colors.white,
+          color: Colors.blue.shade700,
              
       child: SingleChildScrollView(
         child: Stack(
@@ -950,7 +955,7 @@ class DashboardState extends State<DashboardStateful> with TickerProviderStateMi
 
 
         CustomPaint(
-      painter: ProfilePainter(),
+      painter: AboutUsPainter(),
       size: MediaQuery.of(context).size,
     ),
 
@@ -971,7 +976,7 @@ class DashboardState extends State<DashboardStateful> with TickerProviderStateMi
             padding: EdgeInsets.fromLTRB(8.0, 30.0, 0.0, 4.0),
             child: Row(
             children: [
-              IconButton(icon: Icon(Icons.menu, color: Colors.black,), onPressed: () {
+              IconButton(icon: Icon(Icons.menu, color: Colors.white,), onPressed: () {
           isCollapsed = !isCollapsed;
           setState(() {
             
@@ -995,7 +1000,7 @@ class DashboardState extends State<DashboardStateful> with TickerProviderStateMi
               
               fontSize: 24.0,
               fontWeight: FontWeight.w700,
-              color: Colors.black
+              color: Colors.white
               ),
             ),
               ),

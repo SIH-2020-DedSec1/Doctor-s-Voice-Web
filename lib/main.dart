@@ -26,7 +26,7 @@ class LoginOrDashboard extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       
       theme: ThemeData(
-        primarySwatch: Colors.green,
+        primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       home: LoginOrDashboardStateful(title: "Login"),
@@ -172,7 +172,7 @@ class LoginOrDashboardState extends State<LoginOrDashboardStateful> with TickerP
                     child: RaisedButton(
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.0)),
                       elevation: 4.0,
-      color: Colors.green,
+      color: Colors.blue.shade700,
                       onPressed: () {
 
                         FirebaseAuth.instance.signInWithEmailAndPassword(email: emailId.text, password: password.text).then((value) {
@@ -241,7 +241,7 @@ class LoginOrDashboardState extends State<LoginOrDashboardStateful> with TickerP
                 child: Card(
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.0)),
                 elevation: 4.0,
-                color: Colors.pink,
+                color: Colors.blue.shade700,
               shadowColor: Colors.black,
                 child: Container(
                   width: MediaQuery.of(context).size.width / 4,
@@ -269,7 +269,7 @@ class LoginOrDashboardState extends State<LoginOrDashboardStateful> with TickerP
                       children: [
                         Image.network("https://img.icons8.com/bubbles/2x/google-logo.png", width: 50, height: 50,),
 
-                        Text("Continue with Google", style: TextStyle(fontWeight: FontWeight.w500, color: Colors.white),),
+                        Text("Continue with Google", style: TextStyle(fontWeight: FontWeight.w700, color: Colors.white),),
                       ],
                     ),
                     ),
