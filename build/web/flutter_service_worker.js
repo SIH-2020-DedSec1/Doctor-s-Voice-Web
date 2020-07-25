@@ -9,7 +9,7 @@ const RESOURCES = {
 "assets/AssetManifest.json": "ec1cde39573337574c67b293a66a28b8",
 "assets/NOTICES": "30196b5e41c40cc3215b362e1ec347d0",
 "assets/assets/Manrope-Bold.ttf": "656753569aef606dd528cc6bdf672cdc",
-"assets/assets/dv.png": "1d763b91f5590b4c8caf6497742d3328",
+"assets/assets/dv.png": "1a76325228b52f53982d3ddcec38956a",
 "assets/assets/Manrope-Medium.ttf": "6196e0dab83345b15290ee22620358c1",
 "assets/assets/Manrope-Regular.ttf": "0b726174d2b7e161b9e5e8125bf7751a",
 "assets/fonts/MaterialIcons-Regular.ttf": "56d3ffdef7a25659eab6a68a3fbfaf16",

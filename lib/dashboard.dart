@@ -203,7 +203,7 @@ class DashboardState extends State<DashboardStateful> with TickerProviderStateMi
                     padding: EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 8.0),
                     child: CircleAvatar(
                     radius: 40.0,
-              backgroundImage: AssetImage("asset/dv.png"),
+              backgroundImage: AssetImage("assets/dv.png"),
             ),
                   ),
 
@@ -672,7 +672,7 @@ class DashboardState extends State<DashboardStateful> with TickerProviderStateMi
                    padding: EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 8.0),
                    child: CircleAvatar(
                     radius: 50.0,
-              backgroundImage: AssetImage("asset/dv.png"),
+              backgroundImage: AssetImage("assets/dv.png"),
             ),
                  ),
 
