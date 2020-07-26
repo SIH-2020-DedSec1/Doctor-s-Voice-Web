@@ -450,7 +450,8 @@ class DashboardState extends State<DashboardStateful> with TickerProviderStateMi
            Center(
              child:  Padding(
               padding: EdgeInsets.all(8.0),
-              child: Container(      width: MediaQuery.of(context).size.width > 600 ? MediaQuery.of(context).size.width / 2.5 : MediaQuery.of(context).size.width,
+              child: Container(      
+                width: MediaQuery.of(context).size.width > 600 ? MediaQuery.of(context).size.width / 2.5 : MediaQuery.of(context).size.width,
 
                 child: Card(
                 color: Colors.blue.shade500,
