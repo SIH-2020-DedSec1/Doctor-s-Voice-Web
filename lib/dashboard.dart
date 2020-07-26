@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'curvesAnimation.dart';
 import 'new_patient.dart';
 import 'dart:js' as js;
+import 'upi_payments.dart';
 
 import 'package:intl/intl.dart';
 void main() {
@@ -63,6 +64,225 @@ class DashboardState extends State<DashboardStateful> with TickerProviderStateMi
 
   void _launchURL(String url) async {
     js.context.callMethod("open", [url]);
+  }
+
+
+
+  Widget paymentPage(BuildContext context) {
+
+    return AnimatedPositioned(
+      duration: Duration(milliseconds: 500,),
+      curve: Curves.linearToEaseOut,
+      top: isCollapsed ? 0 : 0.1 * screenHeight,
+      bottom: isCollapsed ? 0 : 0.1 * screenWidth,
+      left: isCollapsed ? 0 : 0.6 * screenWidth,
+      right: isCollapsed ? 0 : -0.4 * screenHeight,
+      child: Material(
+
+        elevation: 16.0,
+        
+          borderRadius: BorderRadius.circular(16.0),
+          color: Colors.white,
+             
+      child: SingleChildScrollView(
+        child: Stack(
+          fit: StackFit.loose,
+          children: [
+
+
+
+              Container(
+                width: MediaQuery.of(context).size.width ,
+                height: MediaQuery.of(context).size.height,
+                child: 
+              Align(
+                alignment: Alignment.topRight,
+                child: 
+              Icon(Icons.payment, color: Colors.blue.shade700, size: 180.00,),
+              ),
+              ),
+
+
+
+
+
+        CustomPaint(
+      painter: ProfilePainter(),
+      size: MediaQuery.of(context).size,
+    ),
+
+
+
+
+
+
+
+
+            Column(
+
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.max,
+        children: [
+
+          Padding(
+            padding: EdgeInsets.fromLTRB(8.0, 30.0, 0.0, 4.0),
+            child: Row(
+            children: [
+              IconButton(icon: Icon(Icons.menu, color: Colors.black,), onPressed: () {
+          isCollapsed = !isCollapsed;
+          setState(() {
+            
+          });
+        },),
+            ],
+          ),
+          ),
+        
+
+
+
+          Padding(
+            padding: EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 16.0),
+            child: Text("Payment Board",
+            textAlign: TextAlign.start,
+              style: TextStyle(fontFamily: 'Manrope',
+              
+              fontSize: 24.0,
+              fontWeight: FontWeight.w700,
+              color: Colors.black
+              ),
+            ),
+          ),
+
+           
+
+
+
+
+
+
+
+            Padding(
+              padding: EdgeInsets.all(8.0),
+              child: Card(
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.0)),
+              elevation: 2.0,
+              shadowColor: Colors.indigo,
+              
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+
+                  
+                  Padding(
+                    padding: EdgeInsets.all(16.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+
+                  Text("Available Balance", style: TextStyle(fontSize: 20.0, fontFamily: 'Manrope', fontWeight: FontWeight.w700),),
+
+
+                  Text("INR 100.0", style: TextStyle(fontSize: 20.0, fontFamily: 'Manrope', fontWeight: FontWeight.w700),),
+
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            ),
+
+
+
+          Center(
+            child: 
+            Padding(
+              padding: EdgeInsets.all(8.0),
+              child: RaisedButton(
+                color: Colors.blue.shade200,
+                elevation: 16.0,
+                onPressed: ( ) {
+
+                Navigator.push(context, MaterialPageRoute(builder: (context) => UpiPaymentStateless()));
+
+                },
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.0)),
+              
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: EdgeInsets.all(16.0),
+                    child: 
+                  Text("Add Credits", style: TextStyle(fontSize: 20.0, fontFamily: 'Manrope', fontWeight: FontWeight.w700),),
+                  ),
+                ],
+              ),
+            ),
+            ),
+          ),
+
+
+
+
+            Padding(
+              padding: EdgeInsets.all(8.0),
+              child: Card(
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.0)),
+              elevation: 2.0,
+              shadowColor: Colors.indigo,
+              
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: EdgeInsets.all(16.0),
+                    child: Column(
+                      children: [
+
+                  Text("Transaction History", style: TextStyle(fontSize: 20.0, fontFamily: 'Manrope', fontWeight: FontWeight.w700),),
+
+
+
+                 ListView.builder(
+                    padding: EdgeInsets.fromLTRB(8.0, 8.0, 16.0, 16.0),
+                   dragStartBehavior: DragStartBehavior.down,
+                        shrinkWrap: true,
+                        physics: NeverScrollableScrollPhysics(),
+                        itemCount: litems.length,
+                        itemBuilder: (context, num) {
+                          return new Padding(
+                              padding: EdgeInsets.all(8.0),
+                              child: Text("${num+1}. ${litems[num]}", style: TextStyle(color: Colors.black),),
+                            );
+                        }
+                      ),
+
+
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            ),
+
+
+
+        ],
+      ),
+          ],
+        ),
+      ),
+    ),
+    );
   }
 
   void initState() {
@@ -182,8 +402,9 @@ class DashboardState extends State<DashboardStateful> with TickerProviderStateMi
           userProfileOptions(context),
           isSelectedNumber == 0 ? dashboardMenu(context) : 
           isSelectedNumber == 1 ? historyData(context) : 
-          isSelectedNumber == 2 ? profileMenu(context) : 
-          isSelectedNumber == 3 ? aboutUs(context) : 
+          isSelectedNumber == 2 ? paymentPage(context) :
+          isSelectedNumber == 3 ? profileMenu(context) : 
+          isSelectedNumber == 4 ? aboutUs(context) : 
           Container(),
         ],
       ), 
@@ -324,7 +545,7 @@ class DashboardState extends State<DashboardStateful> with TickerProviderStateMi
                       child: Padding(
                       padding: EdgeInsets.all(8.0),
                       child: 
-            Text("Profile", style: TextStyle(
+            Text("Payment Board", style: TextStyle(
               color: isSelectedNumber == 2 ? Colors.white : Colors.black,fontFamily: 'Manrope', fontSize: 20.0, fontWeight: FontWeight.w500),),
                     ),
                     ),
@@ -337,13 +558,32 @@ class DashboardState extends State<DashboardStateful> with TickerProviderStateMi
                         setState(() {
                           isSelectedNumber = 3;
           isCollapsed = !isCollapsed;
+                          
+                        });
+                      },
+                      child: Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: 
+            Text("Profile", style: TextStyle(
+              color: isSelectedNumber == 3 ? Colors.white : Colors.black,fontFamily: 'Manrope', fontSize: 20.0, fontWeight: FontWeight.w500),),
+                    ),
+                    ),
+
+
+
+
+                    InkWell(
+                      onTap: () {
+                        setState(() {
+                          isSelectedNumber = 4;
+          isCollapsed = !isCollapsed;
                         });
                       },
                       child: Padding(
                       padding: EdgeInsets.all(8.0),
                       child: 
             Text("About us", style: TextStyle(
-              color: isSelectedNumber == 3 ? Colors.white : Colors.black,fontFamily: 'Manrope', fontSize: 20.0, fontWeight: FontWeight.w500),),
+              color: isSelectedNumber == 4 ? Colors.white : Colors.black,fontFamily: 'Manrope', fontSize: 20.0, fontWeight: FontWeight.w500),),
                     ),
                     ),
 
