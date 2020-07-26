@@ -261,7 +261,13 @@ class UpiPaymentState extends State<UpiPaymentStateful> {
                   ),
 
 
-                  
+                  Center(
+                    child: 
+                  Padding(
+                    padding: EdgeInsets.all(16.0),
+                    child: Image.asset("assets/response.png", width: 200.0, height: 200.0,),
+                  ),
+                  ),
 
 
 

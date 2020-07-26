@@ -49,6 +49,7 @@ class DashboardState extends State<DashboardStateful> with TickerProviderStateMi
 
 
   String userName;
+
   List<String> litems = ["Novel Coronavirus","Headache","Fever","Heart attack"];
 
   bool isCollapsed = true;
@@ -288,8 +289,8 @@ class DashboardState extends State<DashboardStateful> with TickerProviderStateMi
   void initState() {
     super.initState();
 
-
     arrayOfPatientsArrival = [0,0,0,0,0,0,0];
+
 
     var sevenDay = DateFormat('yyyy-MM-dd').format(DateTime.now());
     print(DateTime.now().subtract(Duration(days: 1)));
@@ -340,7 +341,6 @@ class DashboardState extends State<DashboardStateful> with TickerProviderStateMi
             });
         }).then((value) {
           isDataLoaded = !isDataLoaded;
-          print("Array" + arrayOfPatientsArrival[5].toString());
           list.add(DataPoint<double>(value: arrayOfPatientsArrival[0], xAxis: 1));
           list.add(DataPoint<double>(value: arrayOfPatientsArrival[1], xAxis: 2));
           list.add(DataPoint<double>(value: arrayOfPatientsArrival[2], xAxis: 3));
@@ -779,7 +779,7 @@ class DashboardState extends State<DashboardStateful> with TickerProviderStateMi
 
 
 
-              Center(
+              isDataLoaded ? Center(
                 child: 
 
             Padding(
@@ -847,7 +847,7 @@ class DashboardState extends State<DashboardStateful> with TickerProviderStateMi
             ),
               ),
             ),
-              ),
+              ) : Container(),
 
 
 
