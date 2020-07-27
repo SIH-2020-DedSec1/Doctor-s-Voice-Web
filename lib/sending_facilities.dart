@@ -393,7 +393,7 @@ class SendingFacilitiesState extends State<SendingFacilitiesStateful> with Ticke
 
                                 String emailId = emailThing.text;
 
-    var url = 'mailto:$emailId?subject='"Doctor's Voice Notification"'&body=${widget.title}';
+    var url = 'mailto:$emailId?subject='"Doctor's Voice Notification"'&body="${widget.title}"';
        js.context.callMethod("open", [url]);
                               }
                         },
