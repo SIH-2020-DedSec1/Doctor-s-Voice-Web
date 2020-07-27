@@ -34231,22 +34231,24 @@ var $async$wX=P.O(function(b,c){if(b===1)return P.Q(c,s)
 while(true)switch(t){case 0:$.Bj().ba("open",[a])
 return P.R(null,s)}})
 return P.S($async$wX,s)},
-a6C:function(a){var t,s,r,q,p,o,n,m,l,k,j=this,i=null,h="Manrope",g=P.by(0,0,0,500,0),f=j.f,e=f?0:0.1*j.r,d=f?0:0.1*j.x,c=f?0:0.6*j.x
-f=f?0:-0.4*j.r
-t=new P.M(16,16)
-s=F.X(a,!1).a
+a6C:function(a){var t,s,r,q,p,o,n,m,l,k,j,i=this,h=null,g="Manrope",f=P.by(0,0,0,500,0),e=i.f,d=e?0:0*i.r,c=e?0:0*i.x
+if(e)t=0
+else{t=i.x
+t=t>600?0.2*t:0.4*t}e=e?0:-0.0*i.r
+s=new P.M(16,16)
 r=F.X(a,!1).a
-s=M.aN(i,new T.ey(C.m8,i,i,L.be(C.Ae,C.X.h(0,700),180),i),i,i,i,i,r.b,i,i,i,s.a)
-r=T.ec(i,i,new K.wi(i),F.X(a,!1).a)
-q=u.t
-p=T.bZ(H.a([B.hH(i,L.be(C.hi,C.k,i),new Z.T3(j),i)],q),C.y,C.z,C.n)
-o=L.aa("Payment Board",i,i,i,i,A.a3(i,i,C.k,i,i,i,i,i,h,i,i,24,i,C.m,i,i,!0,i,i,i,i,i,i),C.x)
-n=new P.M(16,16)
-n=V.cb(T.bb(H.a([new T.u(new V.p(16,16,16,16),T.bZ(H.a([L.aa("Available Balance",i,i,i,i,A.a3(i,i,i,i,i,i,i,i,h,i,i,20,i,C.m,i,i,!0,i,i,i,i,i,i),i),L.aa("INR 100.0",i,i,i,i,A.a3(i,i,i,i,i,i,i,i,h,i,i,20,i,C.m,i,i,!0,i,i,i,i,i,i),i)],q),C.y,C.kH,C.n),i)],q),C.E,C.aj,C.b0),i,2,C.aJ,new X.aQ(new K.a5(n,n,n,n),C.l))
-m=C.X.h(0,200)
-l=new P.M(16,16)
+q=F.X(a,!1).a
+r=M.aN(h,new T.ey(C.m8,h,h,L.be(C.Ae,C.X.h(0,700),180),h),h,h,h,h,q.b,h,h,h,r.a)
+q=T.ec(h,h,new K.wi(h),F.X(a,!1).a)
+p=u.t
+o=T.bZ(H.a([B.hH(h,L.be(C.hi,C.k,h),new Z.T3(i),h)],p),C.y,C.z,C.n)
+n=L.aa("Payment Board",h,h,h,h,A.a3(h,h,C.k,h,h,h,h,h,g,h,h,24,h,C.m,h,h,!0,h,h,h,h,h,h),C.x)
+m=new P.M(16,16)
+m=V.cb(T.bb(H.a([new T.u(new V.p(16,16,16,16),T.bZ(H.a([L.aa("Available Balance",h,h,h,h,A.a3(h,h,h,h,h,h,h,h,g,h,h,20,h,C.m,h,h,!0,h,h,h,h,h,h),h),L.aa("INR 100.0",h,h,h,h,A.a3(h,h,h,h,h,h,h,h,g,h,h,20,h,C.m,h,h,!0,h,h,h,h,h,h),h)],p),C.y,C.kH,C.n),h)],p),C.E,C.aj,C.b0),h,2,C.aJ,new X.aQ(new K.a5(m,m,m,m),C.l))
+l=C.X.h(0,200)
 k=new P.M(16,16)
-return G.BA(d,M.hO(C.J,!0,new K.a5(t,t,t,t),E.i1(T.dG(C.au,H.a([s,r,T.bb(H.a([new T.u(new V.p(8,30,0,4),p,i),new T.u(new V.p(16,8,16,16),o,i),new T.u(new V.p(8,8,8,8),n,i),new T.bt(C.u,i,i,new T.u(new V.p(8,8,8,8),D.kR(T.bb(H.a([new T.u(new V.p(16,16,16,16),L.aa("Add Credits",i,i,i,i,A.a3(i,i,i,i,i,i,i,i,h,i,i,20,i,C.m,i,i,!0,i,i,i,i,i,i),i),i)],q),C.E,C.aj,C.b0),m,16,new Z.T4(a),new X.aQ(new K.a5(l,l,l,l),C.l)),i),i),new T.u(new V.p(8,8,8,8),V.cb(T.bb(H.a([new T.u(new V.p(16,16,16,16),T.bb(H.a([L.aa("Transaction History",i,i,i,i,A.a3(i,i,i,i,i,i,i,i,h,i,i,20,i,C.m,i,i,!0,i,i,i,i,i,i),i),B.aj1(C.jq,new Z.T5(j),4,new V.p(8,8,16,16),new L.pk(i),!0)],q),C.y,C.z,C.n),i)],q),C.E,C.aj,C.b0),i,2,C.aJ,new X.aQ(new K.a5(k,k,k,k),C.l)),i)],q),C.E,C.z,C.n)],q),C.an)),C.ah,C.h,16,i,C.k,i,i,C.b1),C.c3,g,c,f,e)},
+j=new P.M(16,16)
+return G.BA(c,M.hO(C.J,!0,new K.a5(s,s,s,s),E.i1(T.dG(C.au,H.a([r,q,T.bb(H.a([new T.u(new V.p(8,30,0,4),o,h),new T.u(new V.p(16,8,16,16),n,h),new T.u(new V.p(8,8,8,8),m,h),new T.bt(C.u,h,h,new T.u(new V.p(8,8,8,8),D.kR(T.bb(H.a([new T.u(new V.p(16,16,16,16),L.aa("Add Credits",h,h,h,h,A.a3(h,h,h,h,h,h,h,h,g,h,h,20,h,C.m,h,h,!0,h,h,h,h,h,h),h),h)],p),C.E,C.aj,C.b0),l,16,new Z.T4(a),new X.aQ(new K.a5(k,k,k,k),C.l)),h),h),new T.u(new V.p(8,8,8,8),V.cb(T.bb(H.a([new T.u(new V.p(16,16,16,16),T.bb(H.a([L.aa("Transaction History",h,h,h,h,A.a3(h,h,h,h,h,h,h,h,g,h,h,20,h,C.m,h,h,!0,h,h,h,h,h,h),h),B.aj1(C.jq,new Z.T5(i),4,new V.p(8,8,16,16),new L.pk(h),!0)],p),C.y,C.z,C.n),h)],p),C.E,C.aj,C.b0),h,2,C.aJ,new X.aQ(new K.a5(j,j,j,j),C.l)),h)],p),C.E,C.z,C.n)],p),C.an)),C.ah,C.h,16,h,C.k,h,h,C.b1),C.c3,f,t,e,d)},
 aR:function(){var t,s,r,q,p,o,n,m,l=this,k="yyyy-MM-dd"
 l.by()
 l.z=H.a([0,0,0,0,0,0,0],u.m)
@@ -35248,7 +35250,7 @@ E.a3Z.prototype={
 $0:function(){var t,s,r="AC5b032366794305eba7f1d1d24883aa82",q="19c15cb5c1ec3ce4070619df3261b5cc",p="Here's the link to the Doctor's Voice Prescription: ",o=this.a
 if(o.e){t=u.X
 new A.FE(r,q).ow(0,P.ao(["body",p+o.a.c,"from","+13345185009","to","+91"+H.b(o.y.a.a)],t,t)).aD(0,new E.a3P(o),u.P)}if(o.f){t=u.X
-new A.FE(r,q).ow(0,P.ao(["body",p+o.a.c,"from","whatsapp:+14155238886","to","whatsapp:+91"+H.b(o.z.a.a)],t,t)).aD(0,new E.a3Q(o),u.P).ed(new E.a3R())}if(o.r){s="mailto:"+H.b(o.Q.a.a)+"?subject=Doctor's Voice Notification&body="+o.a.c
+new A.FE(r,q).ow(0,P.ao(["body",p+o.a.c,"from","whatsapp:+14155238886","to","whatsapp:+91"+H.b(o.z.a.a)],t,t)).aD(0,new E.a3Q(o),u.P).ed(new E.a3R())}if(o.r){s="mailto:"+H.b(o.Q.a.a)+"?subject=Doctor's Voice Notification&body=\""+o.a.c+'"'
 $.Bj().ba("open",[s])}},
 $S:0}
 E.a3P.prototype={
