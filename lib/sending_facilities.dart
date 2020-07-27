@@ -6,6 +6,7 @@ import 'twilio_whatsapp.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:http/http.dart' as http;
+import 'dart:js' as js;
 
 import 'dashboard.dart';
 
@@ -392,8 +393,8 @@ class SendingFacilitiesState extends State<SendingFacilitiesStateful> with Ticke
 
                                 String emailId = emailThing.text;
 
-                                _launchURL(emailId, "Doctor's Voice Notification", "URL link to the Doctor's Prescription.                                  ${widget.title}\n\nSupport Team,\nDoctor's Voice.");
-
+    var url = 'mailto:$emailId?subject='"Doctor's Voice Notification"'&body=${widget.title}';
+       js.context.callMethod("open", [url]);
                               }
                         },
                         child: Padding(
@@ -431,19 +432,6 @@ class SendingFacilitiesState extends State<SendingFacilitiesStateful> with Ticke
         ),
       ),
     );
-  }
-
-
-
-
-
-  _launchURL(String toMailId, String subject, String body) async {
-    var url = 'mailto:$toMailId?subject=$subject&body=$body';
-    if (await canLaunch(url)) {
-      await launch(url);
-    } else {
-      throw 'Could not launch $url';
-    }
   }
 
 
