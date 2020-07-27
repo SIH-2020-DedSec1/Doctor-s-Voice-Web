@@ -74,10 +74,10 @@ class DashboardState extends State<DashboardStateful> with TickerProviderStateMi
     return AnimatedPositioned(
       duration: Duration(milliseconds: 500,),
       curve: Curves.linearToEaseOut,
-      top: isCollapsed ? 0 : 0.1 * screenHeight,
-      bottom: isCollapsed ? 0 : 0.1 * screenWidth,
-      left: isCollapsed ? 0 : 0.6 * screenWidth,
-      right: isCollapsed ? 0 : -0.4 * screenHeight,
+      top: isCollapsed ? 0 : 0 * screenHeight,
+      bottom: isCollapsed ? 0 : 0 * screenWidth,
+      left: isCollapsed ? 0 : screenWidth > 600 ? 0.2 * screenWidth : 0.4 * screenWidth,
+      right: isCollapsed ? 0 : -0 * screenHeight,
       child: Material(
 
         elevation: 16.0,
