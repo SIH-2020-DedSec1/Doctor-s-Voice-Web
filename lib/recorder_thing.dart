@@ -32,7 +32,7 @@ class WebRecorder {
       html.window.navigator
       .getUserMedia(audio: true)
       .then((stream) {
-          recorder = html.MediaRecorder(stream);//, { 'type': 'audio/wav' });
+          recorder = html.MediaRecorder(stream,);//, { 'type': 'audio/wav' });
           
           print("${recorder.audioBitsPerSecond.toString()} and MimeType ${recorder.mimeType}");
 
@@ -64,7 +64,7 @@ class WebRecorder {
     reader.readAsArrayBuffer(blob);
     reader.onLoadEnd.listen((e) async {
 
-
+      print(html.Url.createObjectUrlFromBlob(blob));
       setData(reader.result);
 
 

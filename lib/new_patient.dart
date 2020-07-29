@@ -7,6 +7,7 @@ import 'dart:convert';
 import 'dart:html';
 import 'dart:typed_data';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:doctors_voice_web/speech_thing_gcp.dart';
 import 'package:path_provider/path_provider.dart';
 import 'recorder_thing.dart';
 import 'curvesAnimation.dart';
@@ -107,6 +108,9 @@ class NewPatientState extends State<NewPatientStateful> with TickerProviderState
   whenRecorderResult(data) {
 
 
+    speechActivation(data);
+
+/**
       http.post(
         "https://api.eu-gb.speech-to-text.watson.cloud.ibm.com/instances/062d6fda-ee57-430d-b1df-a99d8901cc2c/v1/recognize",
         headers : {
@@ -189,7 +193,7 @@ setState(() {
       }).catchError((onError) {
         print(onError.toString());
       });
-
+**/
   }
 
 
