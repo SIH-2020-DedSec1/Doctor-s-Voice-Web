@@ -6,6 +6,9 @@ import 'package:googleapis/speech/v1.dart';
 import 'package:googleapis_auth/auth_io.dart';
 
 
+import 'dart:html' as html;
+
+
 
 
 
@@ -54,13 +57,14 @@ final _credentials = new ServiceAccountCredentials.fromJson(r'''
 
 const _SCOPES = const [SpeechApi.CloudPlatformScope];
 
-void speechActivation(String audioString) {
+void speechActivation(dynamic audioString) {  
 
   clientViaServiceAccount(_credentials, _SCOPES).then((http_client) {
     var speech = new SpeechApi(http_client);
+     // `data:audio/webm;codecs=opus;base64,
     final _json = {
   "audio":{
-    "content": base64.encode(utf8.encode(audioString)),
+    "content": audioString,
   },
   "config": {
     "encoding": "LINEAR16",

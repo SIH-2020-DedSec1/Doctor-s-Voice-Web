@@ -3,10 +3,16 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:html' as html;
 import 'dart:js' as js;
+import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 
 import 'new_patient.dart';
+
+
+import 'package:flutter/services.dart' show rootBundle;
+
+
 
 class WebRecorder {
   static bool isNotRecording = true;
@@ -61,15 +67,18 @@ class WebRecorder {
 
     html.FileReader reader = html.FileReader();
     html.Blob blob = js.JsObject.fromBrowserObject(event)['data'];
-    reader.readAsArrayBuffer(blob);
+    reader.readAsDataUrl(blob);
     reader.onLoadEnd.listen((e) async {
+
 
       print(html.Url.createObjectUrlFromBlob(blob));
       setData(reader.result);
-
-
     
     });
+  }
+
+  html.File returnFile(html.Blob blob) {
+    return blob;
   }
 
   setData(data) => whenReceiveData(data);

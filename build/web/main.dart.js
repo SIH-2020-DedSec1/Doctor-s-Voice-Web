@@ -15220,8 +15220,8 @@ _.e=g
 _.a=h},a2r:function a2r(a){this.a=a},wv:function wv(a,b,c){this.a=a
 this.b=b
 this.$ti=c},hN:function hN(a){this.a=a},
-aBh:function(a){D.aeB($.aqL(),C.G7).aD(0,new B.afq(a),u.P)},
-afq:function afq(a){this.a=a},
+aBh:function(a){D.aeB($.aqL(),C.G7).aD(0,new B.afq(),u.P)},
+afq:function afq(){},
 afp:function afp(){},
 KI:function KI(a,b){this.c=a
 this.a=b},
@@ -36406,7 +36406,7 @@ var $async$A6=P.N(function(b,c){if(b===1)return P.O(c,s)
 while(true)switch(t){case 0:p=new FileReader()
 if(typeof a=="number"||typeof a=="string"||H.hy(a)||a==null)H.v(P.an("object cannot be a num, string, bool, or null"))
 q=P.it(P.ed(a)).h(0,"data")
-p.readAsArrayBuffer(q)
+p.readAsDataURL(q)
 W.bQ(p,"loadend",new M.a7M(r,q,p),!1,u.Ip)
 return P.P(null,s)}})
 return P.Q($async$A6,s)}}
@@ -36603,7 +36603,7 @@ bi:function(){var t=!U.cc(this.c),s=this.G$
 if(s!=null)for(s=P.cB(s,s.r);s.q();)s.d.scH(0,t)
 this.c4()}}
 B.afq.prototype={
-$1:function(a){var t,s=u.X,r=P.ao(["audio",P.ao(["content",this.a],s,u.l),"config",P.ao(["encoding","LINEAR16","sampleRateHertz",16e3,"languageCode","en-US"],s,u.c)],s,u.xS),q=new E.a2U()
+$1:function(a){var t,s=u.X,r=P.ao(["audio",P.ao(["content","/9j/7QBEUGhvdG9zaG9...base64-encoded-audio-content...fXNWzvDEeYxxxzj/Coa6Bax//Z"],s,s),"config",P.ao(["encoding","LINEAR16","sampleRateHertz",16e3,"languageCode","en-US"],s,u.c)],s,u.xS),q=new E.a2U()
 if(r.R(0,"audio")){s=r.h(0,"audio")
 t=new E.a2R()
 if(s.R(0,"content"))t.a=s.h(0,"content")
@@ -58985,7 +58985,9 @@ E.a5I.prototype={
 $1:function(a){return E.avh(a)},
 $S:213}
 E.a2R.prototype={
-cS:function(){return new H.bx(u.ce)}}
+cS:function(){var t=new H.bx(u.ce),s=this.a
+if(s!=null)t.k(0,"content",s)
+return t}}
 E.a2S.prototype={
 RL:function(a){var t=this,s="enableAutomaticPunctuation",r="enableSeparateRecognitionPerChannel",q="enableWordTimeOffsets",p="encoding",o="languageCode",n="maxAlternatives",m="profanityFilter",l="sampleRateHertz",k="speechContexts",j="useEnhanced"
 if(a.R(0,s))t.a=a.h(0,s)
